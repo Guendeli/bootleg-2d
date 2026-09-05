@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 504c89183c1f33941b552ac306752782
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 50282
+  packageName: Turn Based Strategy Framework
+  packageVersion: 4.2.0
+  assetPath: Assets/TBSFramework/Examples/Features/MultiCellUnits/Prefabs/Cells/SquareObstacleCell.prefab
+  uploadId: 874300

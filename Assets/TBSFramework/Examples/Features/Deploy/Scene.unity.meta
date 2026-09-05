@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: dd37faefa0ae90043a82ba35953d2e39
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 50282
+  packageName: Turn Based Strategy Framework
+  packageVersion: 4.2.0
+  assetPath: Assets/TBSFramework/Examples/Features/Deploy/Scene.unity
+  uploadId: 874300

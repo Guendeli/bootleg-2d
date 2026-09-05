@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 3a9053eddb2ad31419c9aaa9835dbaad
+TextScriptImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 50282
+  packageName: Turn Based Strategy Framework
+  packageVersion: 4.2.0
+  assetPath: Assets/TBSFramework/Examples/Features/Deploy/README.md
+  uploadId: 874300

@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: 5e52105de20227e4d9e01d6b1235ca07
+AssetOrigin:
+  serializedVersion: 1
+  productId: 50282
+  packageName: Turn Based Strategy Framework
+  packageVersion: 4.2.0
+  assetPath: Assets/TBSFramework/Examples/Features/MultiCellUnits/Scripts/MultiCellUnit.cs
+  uploadId: 874300

@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: 891c5a12a03683d4da02826168c1aed0
+AssetOrigin:
+  serializedVersion: 1
+  productId: 50282
+  packageName: Turn Based Strategy Framework
+  packageVersion: 4.2.0
+  assetPath: Assets/TBSFramework/Examples/Features/InitiativeSystem/Scripts/ActionBar.cs
+  uploadId: 874300

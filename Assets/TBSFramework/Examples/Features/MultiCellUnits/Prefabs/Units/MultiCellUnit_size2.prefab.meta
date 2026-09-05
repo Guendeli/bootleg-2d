@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 18e0aa1e89899d941854885c842a24d3
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 50282
+  packageName: Turn Based Strategy Framework
+  packageVersion: 4.2.0
+  assetPath: Assets/TBSFramework/Examples/Features/MultiCellUnits/Prefabs/Units/MultiCellUnit_size2.prefab
+  uploadId: 874300

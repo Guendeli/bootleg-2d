@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: b8ef6d1ec837aa541b785153f8afc8ae
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 50282
+  packageName: Turn Based Strategy Framework
+  packageVersion: 4.2.0
+  assetPath: Assets/TBSFramework/Examples/Features/InitiativeSystem/Prefabs/Cells/Hexagon.prefab
+  uploadId: 874300
