@@ -13,5 +13,13 @@ namespace Bootleg.Ball
                 ? tacticsUnit.Stats.GetInt(StatType.KickPower)
                 : fallback;
         }
+
+        /// <summary>The unit's Interception stat (0..1), or <paramref name="fallback"/> for units without TacticsUnit stats.</summary>
+        public static float InterceptionChance(IUnit unit, float fallback = UnitDefinition.DefaultInterception)
+        {
+            return unit is TacticsUnit tacticsUnit && tacticsUnit.Stats != null
+                ? tacticsUnit.Stats.Get(StatType.Interception)
+                : fallback;
+        }
     }
 }

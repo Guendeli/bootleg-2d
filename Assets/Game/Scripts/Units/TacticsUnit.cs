@@ -185,8 +185,38 @@ namespace Bootleg.Units
             return base.IsCellMovableTo(cell) || BallMoveRules.HoldsOnlyLooseBalls(cell);
         }
 
+        // Zone of control for the ball carrier: cells next to an enemy can be entered but not passed through,
+        // so the pathfinder routes around defenders where it can. Leaving the starting cell is always allowed.
+        // Off-ball units move freely. Only set while CachePaths runs, which is the only time edges are evaluated.
+        private HashSet<ICell> _enemyZoneCells;
+
+        public override void CachePaths(ICellManager cellManager)
+        {
+            _enemyZoneCells = _gridController != null && BallInterception.FindCarriedBall(this, _gridController) != null
+                ? BallInterception.EnemyZoneCells(this, cellManager)
+                : null;
+            try
+            {
+                base.CachePaths(cellManager);
+            }
+            finally
+            {
+                _enemyZoneCells = null;
+            }
+        }
+
+        // Zone cells can be entered but have no outgoing edges, so they must still be in the graph for Dijkstra.
+        public override Dictionary<ICell, Dictionary<ICell, float>> GetGraphEdges(ICellManager cellManager)
+        {
+            return PathGraph.AddDeadEnds(base.GetGraphEdges(cellManager));
+        }
+
         public override bool IsCellTraversable(ICell source, ICell destination)
         {
+            if (_enemyZoneCells != null && _enemyZoneCells.Contains(source) && !source.Equals(CurrentCell))
+            {
+                return false;
+            }
             return base.IsCellTraversable(source, destination) || BallMoveRules.HoldsOnlyLooseBalls(destination);
         }
 
@@ -259,6 +289,7 @@ namespace Bootleg.Units
                 { StatType.Attack, AttackFactor },
                 { StatType.Defence, DefenceFactor },
                 { StatType.KickPower, UnitDefinition.DefaultKickPower },
+                { StatType.Interception, UnitDefinition.DefaultInterception },
             });
         }
     }

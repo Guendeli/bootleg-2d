@@ -15,6 +15,8 @@ namespace Bootleg.Abilities
     /// Replaces TBSF's MoveAbility for field units. Same click-to-move flow, plus ball rules:
     /// a path that crosses a loose ball stops on the ball's cell, and clicking a reachable loose ball moves onto it.
     /// Ending a move on the ball makes the unit its carrier (handled by <see cref="BallUnit"/>).
+    /// A carrier stops on entering a cell next to an enemy (see TacticsUnit.IsCellTraversable), and each of those
+    /// enemies may intercept (see <see cref="DribbleCommand"/>).
     /// </summary>
     public class FieldMoveAbility : Ability
     {
@@ -46,6 +48,7 @@ namespace Bootleg.Abilities
         {
             gridController.CellManager.UnMark(_reachableCells.Union(_previewedPath)).Forget();
             _previewedPath = new List<ICell>();
+            InterceptionRiskPreview.Hide();
         }
 
         public override void OnCellHighlighted(ICell cell, IGridController gridController)
@@ -124,7 +127,21 @@ namespace Bootleg.Abilities
             {
                 return;
             }
-            UnitReference.HumanExecuteAbility(new MoveCommand(UnitReference.CurrentCell, path[path.Count - 1], path), gridController);
+            // The path may stop short of the clicked cell (at a loose ball).
+            var endCell = path[path.Count - 1];
+            var move = new MoveCommand(UnitReference.CurrentCell, endCell, path);
+
+            // A ball carrier ending next to enemies gets challenged; the roll happens now so the command replays identically.
+            var ball = BallInterception.FindCarriedBall(UnitReference, gridController);
+            var interceptor = ball != null ? BallInterception.ResolveDribble(endCell, UnitReference, gridController) : null;
+            if (interceptor != null)
+            {
+                UnitReference.HumanExecuteAbility(new DribbleCommand(move, interceptor, ball), gridController);
+            }
+            else
+            {
+                UnitReference.HumanExecuteAbility(move, gridController);
+            }
         }
 
         private void Preview(ICell destination, IGridController gridController)
@@ -136,10 +153,16 @@ namespace Bootleg.Abilities
             ClearPreview(gridController);
             _previewedPath = PathTo(destination, gridController);
             gridController.CellManager.MarkAsPath(_previewedPath, UnitReference.CurrentCell).Forget();
+
+            if (_previewedPath.Count > 0 && BallInterception.FindCarriedBall(UnitReference, gridController) != null)
+            {
+                InterceptionRiskPreview.Show(BallInterception.DribbleRisk(_previewedPath[_previewedPath.Count - 1], UnitReference, gridController));
+            }
         }
 
         private void ClearPreview(IGridController gridController)
         {
+            InterceptionRiskPreview.Hide();
             if (_previewedPath.Count == 0)
             {
                 return;

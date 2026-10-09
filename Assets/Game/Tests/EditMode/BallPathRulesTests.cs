@@ -190,6 +190,31 @@ namespace Bootleg.Tests
         }
 
         [Test]
+        public void Kick_FliesOverEnemy_ButCannotLandOnIt()
+        {
+            var enemy = Cell(3, 2);
+            enemy.IsTaken = true;
+
+            var targets = BallPathRules.GetKickTargets(Cell(2, 2), 3, CellAt, c => c == enemy);
+
+            Assert.IsFalse(targets.ContainsKey(enemy));
+            CollectionAssert.AreEqual(new[] { Cell(3, 2), Cell(4, 2) }, targets[Cell(4, 2)]);
+        }
+
+        [Test]
+        public void Pass_FliesOverEnemyToTeammateBehind()
+        {
+            var enemy = Cell(2, 2);
+            enemy.IsTaken = true;
+            var receiver = Cell(4, 2);
+            receiver.IsTaken = true;
+
+            var targets = BallPathRules.GetPassTargets(Cell(1, 2), 5, CellAt, c => c == receiver, c => c == enemy);
+
+            CollectionAssert.AreEqual(new[] { Cell(2, 2), Cell(3, 2), Cell(4, 2) }, targets[receiver]);
+        }
+
+        [Test]
         public void EmptyWhenPowerIsZero()
         {
             Assert.IsEmpty(Push(Cell(1, 2), Cell(2, 2), 0));

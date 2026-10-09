@@ -13,7 +13,7 @@ namespace Bootleg.Ball
     /// <summary>
     /// Lets the ball carrier kick the ball from its own cell in a straight orthogonal line, up to its KickPower.
     /// Every free cell on those lines is a landing target; hovering previews the path, clicking kicks.
-    /// The carrier loses possession.
+    /// The carrier loses possession. The ball flies past enemies, and each enemy on or next to the path may intercept it.
     /// </summary>
     public class KickAbility : Ability
     {
@@ -49,8 +49,9 @@ namespace Bootleg.Ball
 
         public override void CleanUp(IGridController gridController)
         {
-            gridController.CellManager.UnMark(_targets.Keys).Forget();
+            gridController.CellManager.UnMark(_targets.Keys.Union(_previewedPath)).Forget();
             _previewedPath = new List<ICell>();
+            InterceptionRiskPreview.Hide();
         }
 
         public override void OnCellHighlighted(ICell cell, IGridController gridController)
@@ -59,14 +60,18 @@ namespace Bootleg.Ball
             {
                 _previewedPath = path;
                 gridController.CellManager.MarkAsPath(path, UnitReference.CurrentCell).Forget();
+                InterceptionRiskPreview.Show(BallInterception.FlightRisk(path, UnitReference, gridController));
             }
         }
 
         public override void OnCellDehighlighted(ICell cell, IGridController gridController)
         {
+            InterceptionRiskPreview.Hide();
             if (_previewedPath.Count > 0)
             {
-                gridController.CellManager.MarkAsReachable(_previewedPath).Forget();
+                // The path may cross enemy cells, which are not landing targets.
+                gridController.CellManager.UnMark(_previewedPath.Where(c => !_targets.ContainsKey(c))).Forget();
+                gridController.CellManager.MarkAsReachable(_previewedPath.Where(_targets.ContainsKey)).Forget();
                 _previewedPath = new List<ICell>();
             }
         }
@@ -78,7 +83,10 @@ namespace Bootleg.Ball
                 gridController.GridState = new GridStateAwaitInput();
                 return;
             }
-            UnitReference.HumanExecuteAbility(new BallTravelCommand(_ball, _ball.CurrentCell, path, _actionCost, isKick: true), gridController);
+            var (travelledPath, interceptor) = BallInterception.ResolveFlight(path, UnitReference, gridController);
+            UnitReference.HumanExecuteAbility(
+                new BallTravelCommand(_ball, _ball.CurrentCell, travelledPath, _actionCost, isKick: true, receiver: interceptor),
+                gridController);
         }
 
         public override void OnUnitClicked(IUnit unit, IGridController gridController)
@@ -100,7 +108,8 @@ namespace Bootleg.Ball
             }
 
             var power = BallStats.KickPower(UnitReference, _fallbackKickPower);
-            return (ball, BallPathRules.GetKickTargets(UnitReference.CurrentCell, power, gridController.CellManager.GetCellAt));
+            return (ball, BallPathRules.GetKickTargets(UnitReference.CurrentCell, power, gridController.CellManager.GetCellAt,
+                BallInterception.HasEnemyOf(UnitReference)));
         }
     }
 }

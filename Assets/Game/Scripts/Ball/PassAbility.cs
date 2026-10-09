@@ -12,9 +12,9 @@ using UnityEngine;
 namespace Bootleg.Ball
 {
     /// <summary>
-    /// Lets the ball carrier pass to a teammate in a straight orthogonal line within its KickPower, with only free
-    /// cells in between (an enemy or obstacle in the way blocks the pass). Receivers are marked targetable;
-    /// hovering one previews the path, clicking passes. The receiver takes possession on arrival.
+    /// Lets the ball carrier pass to a teammate in a straight orthogonal line within its KickPower. The ball flies past
+    /// enemies, and each enemy on or next to the path may intercept it; obstacles block the pass. Receivers are marked
+    /// targetable; hovering one previews the path, clicking passes. The receiver (or interceptor) takes possession.
     /// </summary>
     public class PassAbility : Ability
     {
@@ -61,6 +61,7 @@ namespace Bootleg.Ball
                 ClearPreview(gridController);
                 _previewedPath = path;
                 gridController.CellManager.MarkAsPath(path, UnitReference.CurrentCell).Forget();
+                InterceptionRiskPreview.Show(BallInterception.FlightRisk(path, UnitReference, gridController));
             }
         }
 
@@ -73,8 +74,9 @@ namespace Bootleg.Ball
         {
             if (_receivers.TryGetValue(unit, out var path))
             {
+                var (travelledPath, interceptor) = BallInterception.ResolveFlight(path, UnitReference, gridController);
                 UnitReference.HumanExecuteAbility(
-                    new BallTravelCommand(_ball, _ball.CurrentCell, path, _actionCost, receiver: unit),
+                    new BallTravelCommand(_ball, _ball.CurrentCell, travelledPath, _actionCost, receiver: interceptor ?? unit),
                     gridController);
             }
             else if (!ReferenceEquals(unit, UnitReference) && gridController.TurnContext.PlayableUnits().Contains(unit))
@@ -101,7 +103,7 @@ namespace Bootleg.Ball
 
             var power = BallStats.KickPower(UnitReference, _fallbackKickPower);
             var targets = BallPathRules.GetPassTargets(UnitReference.CurrentCell, power, gridController.CellManager.GetCellAt,
-                cell => FindTeammate(cell) != null);
+                cell => FindTeammate(cell) != null, BallInterception.HasEnemyOf(UnitReference));
             foreach (var target in targets)
             {
                 receivers[FindTeammate(target.Key)] = target.Value;
@@ -119,6 +121,7 @@ namespace Bootleg.Ball
 
         private void ClearPreview(IGridController gridController)
         {
+            InterceptionRiskPreview.Hide();
             if (_previewedPath.Count > 0)
             {
                 gridController.CellManager.UnMark(_previewedPath).Forget();

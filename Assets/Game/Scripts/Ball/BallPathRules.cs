@@ -33,63 +33,83 @@ namespace Bootleg.Ball
 
         /// <summary>
         /// Kick: the carrier sends the ball from its own cell in any orthogonal direction, landing on any free cell
-        /// up to <c>power</c> cells away.
+        /// up to <c>power</c> cells away. The ball flies over cells <paramref name="canFlyOver"/> accepts (enemies,
+        /// who may intercept it) but cannot land on them; any other taken cell ends the line.
         /// </summary>
         /// <returns>Each possible landing cell mapped to the path the ball travels to reach it.</returns>
-        public static Dictionary<ICell, List<ICell>> GetKickTargets(ICell carrierCell, int power, Func<Vector2IntImpl, ICell> cellAt)
+        public static Dictionary<ICell, List<ICell>> GetKickTargets(ICell carrierCell, int power, Func<Vector2IntImpl, ICell> cellAt,
+            Func<ICell, bool> canFlyOver = null)
         {
             var targets = new Dictionary<ICell, List<ICell>>();
             foreach (var (dx, dy) in OrthogonalDirections)
             {
-                var line = GetLine(carrierCell, dx, dy, power, cellAt);
-                for (var i = 0; i < line.Count; i++)
+                var path = new List<ICell>();
+                foreach (var cell in WalkLine(carrierCell, dx, dy, power, cellAt))
                 {
-                    targets[line[i]] = line.GetRange(0, i + 1);
+                    if (cell.IsTaken && !(canFlyOver?.Invoke(cell) ?? false))
+                    {
+                        break;
+                    }
+                    path.Add(cell);
+                    if (!cell.IsTaken)
+                    {
+                        targets[cell] = new List<ICell>(path);
+                    }
                 }
             }
             return targets;
         }
 
         /// <summary>
-        /// Pass: like a kick, but the ball goes to a receiver. In each orthogonal direction the ball crosses free cells;
-        /// the first taken cell ends the line, and it is a target only if <paramref name="isReceiver"/> accepts it.
-        /// The receiver must be within <c>power</c> cells.
+        /// Pass: like a kick, but the ball goes to a receiver. In each orthogonal direction the ball crosses free cells
+        /// and cells <paramref name="canFlyOver"/> accepts; the first other taken cell ends the line, and it is a target
+        /// only if <paramref name="isReceiver"/> accepts it. The receiver must be within <c>power</c> cells.
         /// </summary>
         /// <returns>Each receiver's cell mapped to the path the ball travels, ending on that cell.</returns>
-        public static Dictionary<ICell, List<ICell>> GetPassTargets(ICell carrierCell, int power, Func<Vector2IntImpl, ICell> cellAt, Func<ICell, bool> isReceiver)
+        public static Dictionary<ICell, List<ICell>> GetPassTargets(ICell carrierCell, int power, Func<Vector2IntImpl, ICell> cellAt,
+            Func<ICell, bool> isReceiver, Func<ICell, bool> canFlyOver = null)
         {
             var targets = new Dictionary<ICell, List<ICell>>();
             foreach (var (dx, dy) in OrthogonalDirections)
             {
                 var path = new List<ICell>();
-                for (var step = 1; step <= power; step++)
+                foreach (var cell in WalkLine(carrierCell, dx, dy, power, cellAt))
                 {
-                    var cell = cellAt(new Vector2IntImpl(carrierCell.GridCoordinates.x + dx * step, carrierCell.GridCoordinates.y + dy * step));
-                    if (cell == null)
-                    {
-                        break;
-                    }
                     path.Add(cell);
-                    if (cell.IsTaken)
+                    if (!cell.IsTaken || (canFlyOver?.Invoke(cell) ?? false))
                     {
-                        if (isReceiver(cell))
-                        {
-                            targets[cell] = path;
-                        }
-                        break;
+                        continue;
                     }
+                    if (isReceiver(cell))
+                    {
+                        targets[cell] = path;
+                    }
+                    break;
                 }
             }
             return targets;
         }
 
-        private static List<ICell> GetLine(ICell origin, int dx, int dy, int power, Func<Vector2IntImpl, ICell> cellAt)
+        /// <summary>The cells 1..power steps from <paramref name="origin"/> in one direction, stopping at the map edge.</summary>
+        private static IEnumerable<ICell> WalkLine(ICell origin, int dx, int dy, int power, Func<Vector2IntImpl, ICell> cellAt)
         {
-            var path = new List<ICell>();
             for (var step = 1; step <= power; step++)
             {
                 var cell = cellAt(new Vector2IntImpl(origin.GridCoordinates.x + dx * step, origin.GridCoordinates.y + dy * step));
-                if (cell == null || cell.IsTaken)
+                if (cell == null)
+                {
+                    yield break;
+                }
+                yield return cell;
+            }
+        }
+
+        private static List<ICell> GetLine(ICell origin, int dx, int dy, int power, Func<Vector2IntImpl, ICell> cellAt)
+        {
+            var path = new List<ICell>();
+            foreach (var cell in WalkLine(origin, dx, dy, power, cellAt))
+            {
+                if (cell.IsTaken)
                 {
                     break;
                 }
