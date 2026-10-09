@@ -199,6 +199,8 @@ namespace Bootleg.Units
             AddAction("Move", abilities.Where(a => a is FieldMoveAbility || (!hasFieldMove && a is MoveAbility) || a is AttackRangeHighlightAbility));
             AddAction("Attack", abilities.Where(a => a is AttackAbility));
             AddAction("Push", abilities.Where(a => a is PushBallAbility));
+            AddAction("Kick", abilities.Where(a => a is KickAbility));
+            AddAction("Tackle", abilities.Where(a => a is TackleAbility));
             ActiveActionIndex = 0;
 #if UNITY_EDITOR
             UnityEditor.EditorUtility.SetDirty(this);

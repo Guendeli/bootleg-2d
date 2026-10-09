@@ -9,7 +9,7 @@ using TurnBasedStrategyFramework.Common.Utilities;
 
 namespace Bootleg.Tests
 {
-    public class BallPushRulesTests
+    public class BallPathRulesTests
     {
         private Dictionary<Vector2IntImpl, TestCell> _grid;
 
@@ -29,7 +29,7 @@ namespace Bootleg.Tests
 
         private ICell Cell(int x, int y) => _grid[new Vector2IntImpl(x, y)];
         private ICell CellAt(Vector2IntImpl coords) => _grid.TryGetValue(coords, out var cell) ? cell : null;
-        private List<ICell> Push(ICell pusher, ICell ball, int power) => BallPushRules.GetPushPath(pusher, ball, power, CellAt);
+        private List<ICell> Push(ICell pusher, ICell ball, int power) => BallPathRules.GetPushPath(pusher, ball, power, CellAt);
 
         [Test]
         public void PushesAwayFromPusher_UpToPower()
@@ -95,6 +95,45 @@ namespace Bootleg.Tests
         public void EmptyWhenNotAdjacent()
         {
             Assert.IsEmpty(Push(Cell(0, 2), Cell(2, 2), 3));
+        }
+
+        [Test]
+        public void Kick_TargetsEveryFreeCellInFourLines()
+        {
+            var targets = BallPathRules.GetKickTargets(Cell(2, 2), 2, CellAt);
+
+            CollectionAssert.AreEquivalent(
+                new[] { Cell(3, 2), Cell(4, 2), Cell(1, 2), Cell(0, 2), Cell(2, 3), Cell(2, 4), Cell(2, 1), Cell(2, 0) },
+                targets.Keys);
+        }
+
+        [Test]
+        public void Kick_PathToTargetIncludesCellsBefore()
+        {
+            var targets = BallPathRules.GetKickTargets(Cell(2, 2), 3, CellAt);
+
+            CollectionAssert.AreEqual(new[] { Cell(2, 3), Cell(2, 4), Cell(2, 5) }, targets[Cell(2, 5)]);
+            CollectionAssert.AreEqual(new[] { Cell(2, 3) }, targets[Cell(2, 3)]);
+        }
+
+        [Test]
+        public void Kick_LineStopsBeforeTakenCell()
+        {
+            Cell(4, 2).IsTaken = true;
+
+            var targets = BallPathRules.GetKickTargets(Cell(2, 2), 5, CellAt);
+
+            Assert.IsTrue(targets.ContainsKey(Cell(3, 2)));
+            Assert.IsFalse(targets.ContainsKey(Cell(4, 2)));
+            Assert.IsFalse(targets.ContainsKey(Cell(5, 2)));
+        }
+
+        [Test]
+        public void Kick_NoTargetsWhenSurrounded()
+        {
+            Cell(1, 2).IsTaken = Cell(3, 2).IsTaken = Cell(2, 1).IsTaken = Cell(2, 3).IsTaken = true;
+
+            Assert.IsEmpty(BallPathRules.GetKickTargets(Cell(2, 2), 3, CellAt));
         }
 
         [Test]
