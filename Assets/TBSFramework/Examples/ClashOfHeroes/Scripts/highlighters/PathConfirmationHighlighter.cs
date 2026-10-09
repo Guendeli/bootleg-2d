@@ -1,5 +1,5 @@
 using System.Linq;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using TurnBasedStrategyFramework.Unity.Cells;
 using TurnBasedStrategyFramework.Unity.Highlighters;
 using UnityEngine;
@@ -15,14 +15,14 @@ namespace TurnBasedStrategyFramework.Unity.Examples.ClashOfHeroes.Highlighters
         [SerializeField] private GameObject _confirmationMarker;
         [SerializeField] private Cell _cellReference;
 
-        public override Task Apply(IHighlightParams @params)
+        public override UniTask Apply(IHighlightParams @params)
         {
             var pathHighlightParams = (PathHighlightParams)@params;
             if (pathHighlightParams.Path.Last().Equals(_cellReference))
             {
                 _confirmationMarker.SetActive(true);
             }
-            return Task.CompletedTask;
+            return UniTask.CompletedTask;
         }
     }
 }

@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using TurnBasedStrategyFramework.Unity.Highlighters;
 using TurnBasedStrategyFramework.Unity.Units;
 using UnityEngine;
@@ -13,7 +13,7 @@ namespace TurnBasedStrategyFramework.Unity.Examples.ClashOfHeroes.Units
     {
         [SerializeField] private List<Highlighter> _relocateHighlighterFn;
 
-        public async Task ApplyRelocateEffect(MoveHighlightParams @params)
+        public async UniTask ApplyRelocateEffect(MoveHighlightParams @params)
         {
             foreach (var fn in _relocateHighlighterFn)
             {

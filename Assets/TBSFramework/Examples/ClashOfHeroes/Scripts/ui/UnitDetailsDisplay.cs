@@ -9,6 +9,7 @@ using TurnBasedStrategyFramework.Unity.Examples.ClashOfHeroes.Units;
 using TurnBasedStrategyFramework.Unity.Units;
 using UnityEngine;
 using UnityEngine.UI;
+using Cysharp.Threading.Tasks;
 
 namespace TurnBasedStrategyFramework.Unity.Examples.ClashOfHeroes.UI
 {
@@ -98,7 +99,7 @@ namespace TurnBasedStrategyFramework.Unity.Examples.ClashOfHeroes.UI
                 float currentHealth = initialHealth + (float)Math.Ceiling(effectiveHealthChange * t);
 
                 _unitHealth.text = $"health: {currentHealth} / {obj.AffectedUnit.MaxHealth}";
-                await Awaitable.NextFrameAsync();
+                await UniTask.NextFrame();
             }
 
             _unitHealth.text = $"health: {targetHealth} / {obj.AffectedUnit.MaxHealth}";

@@ -1,6 +1,6 @@
 using System;
 using System.Linq;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using TurnBasedStrategyFramework.Common.AI.BehaviourTrees;
 using TurnBasedStrategyFramework.Common.Units;
 using TurnBasedStrategyFramework.Unity.Units;
@@ -32,11 +32,11 @@ namespace TurnBasedStrategyFramework.Unity.AI.BehaviourTrees
         {
         }
 
-        public Task<bool> Execute(bool debugMode)
+        public UniTask<bool> Execute(bool debugMode)
         {
             var unitType = _unitType;
             var unitCount = _unitManager.GetFriendlyUnits(_playerNumber).Count(u => (u as ITypedUnit).UnitType.Equals(unitType));
-            return Task.FromResult(unitCount >= _thresholdFn());
+            return UniTask.FromResult(unitCount >= _thresholdFn());
         }
     }
 }

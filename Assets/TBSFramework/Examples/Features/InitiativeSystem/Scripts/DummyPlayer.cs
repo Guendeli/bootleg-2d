@@ -1,7 +1,9 @@
+using System;
 using TurnBasedStrategyFramework.Common.Controllers;
 using TurnBasedStrategyFramework.Common.Players;
 using TurnBasedStrategyFramework.Unity.Players;
 using UnityEngine;
+using Cysharp.Threading.Tasks;
 
 namespace TurnBasedStrategyFramework.Unity.Examples.Features.Initiative
 {
@@ -25,7 +27,7 @@ namespace TurnBasedStrategyFramework.Unity.Examples.Features.Initiative
         public async override void Play(GridController gridController)
         {
             // Waits for the defined delay, then immediately ends the turn.
-            await Awaitable.WaitForSecondsAsync(_delay / 1000f);
+            await UniTask.Delay(TimeSpan.FromMilliseconds(_delay));
             gridController.EndTurn();
         }
     }

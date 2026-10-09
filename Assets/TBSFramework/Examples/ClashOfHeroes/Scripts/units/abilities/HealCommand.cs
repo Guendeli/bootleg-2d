@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using TurnBasedStrategyFramework.Common.Controllers;
 using TurnBasedStrategyFramework.Common.Units;
 using TurnBasedStrategyFramework.Common.Units.Abilities;
@@ -15,23 +15,23 @@ namespace TurnBasedStrategyFramework.Unity.Examples.ClashOfHeroes.Units.Abilitie
         private readonly IUnit _target;
         private readonly int _healAmount;
 
-        private readonly Func<Task> _healHighlighter;
+        private readonly Func<UniTask> _healHighlighter;
 
-        public HealCommand(int healAmount, IUnit target, Func<Task> healHighlighter) : this()
+        public HealCommand(int healAmount, IUnit target, Func<UniTask> healHighlighter) : this()
         {
             _healAmount = healAmount;
             _target = target;
             _healHighlighter = healHighlighter;
         }
 
-        public async Task Execute(IUnit unit, IGridController controller)
+        public async UniTask Execute(IUnit unit, IGridController controller)
         {
             _target.ModifyHealth(Math.Min(_healAmount, _target.MaxHealth - _target.Health), unit);
             await _healHighlighter();
         }
 
 
-        public Task Undo(IUnit unit, IGridController controller)
+        public UniTask Undo(IUnit unit, IGridController controller)
         {
             throw new System.NotImplementedException();
         }

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Cysharp.Threading.Tasks;
 using TurnBasedStrategyFramework.Common.Cells;
 using TurnBasedStrategyFramework.Common.Controllers;
 using TurnBasedStrategyFramework.Common.Controllers.GridStates;
@@ -87,13 +88,13 @@ namespace TurnBasedStrategyFramework.Unity.Examples.ClashOfHeroes.Units.Abilitie
                 new RelocateCommand(
                     cell,
                     _actionCost,
-                    async () => await (UnitReference as Unit)?.GetComponent<IRelocateHighlighter>()?.ApplyRelocateEffect(
+                    async () => await ((UnitReference as Unit)?.GetComponent<IRelocateHighlighter>()?.ApplyRelocateEffect(
                         new MoveHighlightParams(
                             UnitReference.CurrentCell,
                             cell,
                             Enumerable.Empty<ICell>()
                         )
-                    )
+                    ) ?? UniTask.CompletedTask)
                 ),
                 gridController
             );

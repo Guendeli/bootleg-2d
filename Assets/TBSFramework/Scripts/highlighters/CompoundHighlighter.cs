@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace TurnBasedStrategyFramework.Unity.Highlighters
@@ -16,9 +16,9 @@ namespace TurnBasedStrategyFramework.Unity.Highlighters
         /// Each highlighter in this list will run concurrently.
         /// </summary>
         [SerializeField] private List<Highlighter> _highlighters;
-        public override Task Apply(IHighlightParams @params)
+        public override UniTask Apply(IHighlightParams @params)
         {
-            return Task.WhenAll(_highlighters.Select(h => h.Apply(@params)));
+            return UniTask.WhenAll(_highlighters.Select(h => h.Apply(@params)));
         }
     }
 }

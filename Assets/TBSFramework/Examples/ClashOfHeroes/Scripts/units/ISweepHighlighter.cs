@@ -1,4 +1,4 @@
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using TurnBasedStrategyFramework.Unity.Units;
 using UnityEngine;
 
@@ -9,6 +9,6 @@ namespace TurnBasedStrategyFramework.Unity.Examples.ClashOfHeroes.Units
     /// </summary>
     public interface ISweepHighlighter
     {
-        Task ApplySweepEffect(GameObject target, CombatHighlightParams @params);
+        UniTask ApplySweepEffect(GameObject target, CombatHighlightParams @params);
     }
 }

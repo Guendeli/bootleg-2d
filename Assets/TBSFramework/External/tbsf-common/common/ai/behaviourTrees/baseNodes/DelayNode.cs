@@ -1,4 +1,4 @@
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 
 namespace TurnBasedStrategyFramework.Common.AI.BehaviourTrees
 {
@@ -39,7 +39,7 @@ namespace TurnBasedStrategyFramework.Common.AI.BehaviourTrees
         /// Once the delay has elapsed, it executes the child node.
         /// </summary>
         /// <returns>A task representing the execution, with a boolean result indicating success or failure of the child node.</returns>
-        public async Task<bool> Execute(bool debugMode)
+        public async UniTask<bool> Execute(bool debugMode)
         {
             if (_turnsPassed < _delay)
             {

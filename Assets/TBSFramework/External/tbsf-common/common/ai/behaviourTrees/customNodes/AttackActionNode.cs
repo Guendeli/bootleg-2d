@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using TurnBasedStrategyFramework.Common.AI.Evaluators;
 using TurnBasedStrategyFramework.Common.Controllers;
 using TurnBasedStrategyFramework.Common.Units;
@@ -45,11 +45,11 @@ namespace TurnBasedStrategyFramework.Common.AI.BehaviourTrees
         /// Executes the attack action by selecting the best target based on the provided evaluators and initiating the attack.
         /// </summary>
         /// <returns>A task representing the execution, with a boolean result indicating success.</returns>
-        public Task<bool> Execute(bool debugMode)
+        public UniTask<bool> Execute(bool debugMode)
         {
             if (_unit.ActionPoints <= 0)
             {
-                return Task.FromResult(false);
+                return UniTask.FromResult(false);
             }
 
             var enemyUnits = _gridController.UnitManager.GetEnemyUnits(_unit.PlayerNumber);
@@ -72,7 +72,7 @@ namespace TurnBasedStrategyFramework.Common.AI.BehaviourTrees
                 }
             }
 
-            var tcs = new TaskCompletionSource<bool>();
+            var tcs = new UniTaskCompletionSource<bool>();
 
             _unit.AIExecuteAbility(new AttackCommand(target, _unit.CalculateTotalDamage(target)), _gridController, tcs);
             return tcs.Task;

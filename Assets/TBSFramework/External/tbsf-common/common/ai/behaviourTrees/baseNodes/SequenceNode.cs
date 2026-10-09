@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 
 namespace TurnBasedStrategyFramework.Common.AI.BehaviourTrees
 {
@@ -27,7 +27,7 @@ namespace TurnBasedStrategyFramework.Common.AI.BehaviourTrees
         /// If all child nodes succeed, the sequence node returns success.
         /// </summary>
         /// <returns>A task representing the execution, with a boolean result indicating whether all child nodes succeeded.</returns>
-        public readonly async Task<bool> Execute(bool debugMode)
+        public readonly async UniTask<bool> Execute(bool debugMode)
         {
             foreach (var child in _children)
             {

@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using TurnBasedStrategyFramework.Unity.Highlighters;
 using TurnBasedStrategyFramework.Unity.Units;
 using UnityEngine;
@@ -14,7 +14,7 @@ namespace TurnBasedStrategyFramework.Unity.Examples.ClashOfHeroes.Units
         [SerializeField] private List<Highlighter> _rammedDamageHighlighterFn = new List<Highlighter>();
         [SerializeField] private List<Highlighter> _rammedKnockbackHighlighterFn = new List<Highlighter>();
 
-        public async Task ApplyDamageEffect()
+        public async UniTask ApplyDamageEffect()
         {
             foreach (var fn in _rammedDamageHighlighterFn)
             {
@@ -22,7 +22,7 @@ namespace TurnBasedStrategyFramework.Unity.Examples.ClashOfHeroes.Units
             }
         }
 
-        public async Task ApplyKnockbackEffect(MoveHighlightParams @params)
+        public async UniTask ApplyKnockbackEffect(MoveHighlightParams @params)
         {
             foreach (var fn in _rammedKnockbackHighlighterFn)
             {

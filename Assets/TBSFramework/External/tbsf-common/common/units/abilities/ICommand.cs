@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using TurnBasedStrategyFramework.Common.Controllers;
 
 namespace TurnBasedStrategyFramework.Common.Units.Abilities
@@ -15,7 +15,7 @@ namespace TurnBasedStrategyFramework.Common.Units.Abilities
         /// <param name="unit">The unit performing the command.</param>
         /// <param name="controller">The grid controller.</param>
         /// <returns>A task representing the asynchronous operation.</returns>
-        Task Execute(IUnit unit, IGridController controller);
+        UniTask Execute(IUnit unit, IGridController controller);
 
         /// <summary>
         /// Reverts the effects of the command for the specified unit, effectively undoing the action.
@@ -23,7 +23,7 @@ namespace TurnBasedStrategyFramework.Common.Units.Abilities
         /// <param name="unit">The unit for which the command is being undone.</param>
         /// <param name="controller">The grid controller.</param>
         /// <returns>A task representing the asynchronous operation.</returns>
-        Task Undo(IUnit unit, IGridController controller);
+        UniTask Undo(IUnit unit, IGridController controller);
 
         /// <summary>
         /// Encapsulates the command's parameters into a dictionary for network transmission.

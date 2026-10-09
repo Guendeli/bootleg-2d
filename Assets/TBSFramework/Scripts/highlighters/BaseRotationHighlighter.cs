@@ -1,4 +1,4 @@
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace TurnBasedStrategyFramework.Unity.Highlighters
@@ -35,7 +35,7 @@ namespace TurnBasedStrategyFramework.Unity.Highlighters
         /// Rotates the Transform towards the specified direction over the configured duration and using the animation curve.
         /// </summary>
         /// <param name="direction">The direction to rotate towards.</param>
-        protected async Task RotateTowards(Vector3 direction)
+        protected async UniTask RotateTowards(Vector3 direction)
         {
             Quaternion initialRotation = _transform.rotation;
             Quaternion targetRotation = Quaternion.LookRotation(direction);
@@ -53,7 +53,7 @@ namespace TurnBasedStrategyFramework.Unity.Highlighters
                 _transform.rotation = RestrictRotationToAxis(initialRotation, intermediateRotation);
 
                 elapsedTime += Time.deltaTime;
-                await Awaitable.NextFrameAsync();
+                await UniTask.NextFrame();
             }
 
             _transform.rotation = RestrictRotationToAxis(initialRotation, targetRotation);

@@ -1,5 +1,5 @@
 using System;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 
 namespace TurnBasedStrategyFramework.Common.AI.BehaviourTrees
 {
@@ -16,13 +16,13 @@ namespace TurnBasedStrategyFramework.Common.AI.BehaviourTrees
         /// <summary>
         /// The function to be executed by this node.
         /// </summary>
-        private readonly Func<Task<bool>> _func;
+        private readonly Func<UniTask<bool>> _func;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FuncNode"/> struct with the specified function.
         /// </summary>
         /// <param name="func">The function that this node will execute.</param>
-        public FuncNode(Func<Task<bool>> func)
+        public FuncNode(Func<UniTask<bool>> func)
         {
             _func = func;
         }
@@ -31,7 +31,7 @@ namespace TurnBasedStrategyFramework.Common.AI.BehaviourTrees
         /// Executes the function node by invoking the provided function.
         /// </summary>
         /// <returns>A task representing the execution, with a boolean result indicating success or failure.</returns>
-        public Task<bool> Execute(bool debugMode)
+        public UniTask<bool> Execute(bool debugMode)
         {
             return _func();
         }

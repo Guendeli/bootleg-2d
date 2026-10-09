@@ -1,4 +1,4 @@
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace TurnBasedStrategyFramework.Unity.Highlighters
@@ -13,11 +13,11 @@ namespace TurnBasedStrategyFramework.Unity.Highlighters
         /// </summary>
         /// <param name="@params">The parameters used to customize the highlight effect.</param>
         /// <returns>A task representing the asynchronous operation of applying the highlight effect.</returns>
-        public abstract Task Apply(IHighlightParams @params);
+        public abstract UniTask Apply(IHighlightParams @params);
     }
 
     public interface IHighlighter
     {
-        Task Apply(IHighlightParams @params);
+        UniTask Apply(IHighlightParams @params);
     }
 }

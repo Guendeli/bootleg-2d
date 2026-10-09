@@ -1,4 +1,4 @@
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace TurnBasedStrategyFramework.Unity.Highlighters
@@ -12,7 +12,7 @@ namespace TurnBasedStrategyFramework.Unity.Highlighters
         [SerializeField] private float _duration = 1f;
         [SerializeField] private AnimationCurve _scaleCurve;
 
-        public override async Task Apply(IHighlightParams @params)
+        public override async UniTask Apply(IHighlightParams @params)
         {
             Vector3 originalScale = Vector3.one;
 
@@ -24,7 +24,7 @@ namespace TurnBasedStrategyFramework.Unity.Highlighters
                 float scaleMultiplier = _scaleCurve.Evaluate(t);
                 _targetTransform.localScale = originalScale * scaleMultiplier;
 
-                await Awaitable.NextFrameAsync();
+                await UniTask.NextFrame();
             }
 
             _targetTransform.localScale = originalScale * _scaleCurve.Evaluate(1f);

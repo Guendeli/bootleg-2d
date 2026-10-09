@@ -1,4 +1,4 @@
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using TurnBasedStrategyFramework.Unity.Units;
 using UnityEngine;
 
@@ -15,7 +15,7 @@ namespace TurnBasedStrategyFramework.Unity.Highlighters
         [SerializeField] private AnimationCurve _swayCurve;
         [SerializeField] private Transform _targetTransform;
 
-        public override async Task Apply(IHighlightParams @params)
+        public override async UniTask Apply(IHighlightParams @params)
         {
             var combatHighlightParams = (CombatHighlightParams)@params;
 
@@ -31,7 +31,7 @@ namespace TurnBasedStrategyFramework.Unity.Highlighters
                 float swayFactor = _swayCurve.Evaluate(t);
                 _targetTransform.localPosition = startingPosition + direction * swayFactor;
                 elapsedTime += Time.deltaTime;
-                await Awaitable.NextFrameAsync();
+                await UniTask.NextFrame();
             }
 
             _targetTransform.localPosition = startingPosition;

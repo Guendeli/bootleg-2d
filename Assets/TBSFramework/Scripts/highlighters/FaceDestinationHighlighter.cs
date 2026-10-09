@@ -1,4 +1,4 @@
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using TurnBasedStrategyFramework.Unity.Cells;
 using TurnBasedStrategyFramework.Unity.Units;
 using UnityEngine;
@@ -10,7 +10,7 @@ namespace TurnBasedStrategyFramework.Unity.Highlighters
     /// </summary>
     public class FaceDestinationHighlighter : BaseRotationHighlighter
     {
-        public override async Task Apply(IHighlightParams @params)
+        public override async UniTask Apply(IHighlightParams @params)
         {
             var moveHighlightParams = (MoveHighlightParams)@params;
 

@@ -1,4 +1,4 @@
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using TurnBasedStrategyFramework.Unity.Units;
 
 namespace TurnBasedStrategyFramework.Unity.Examples.ClashOfHeroes.Units
@@ -8,7 +8,7 @@ namespace TurnBasedStrategyFramework.Unity.Examples.ClashOfHeroes.Units
     /// </summary>
     public interface IRammedHighlighter
     {
-        Task ApplyDamageEffect();
-        Task ApplyKnockbackEffect(MoveHighlightParams @params);
+        UniTask ApplyDamageEffect();
+        UniTask ApplyKnockbackEffect(MoveHighlightParams @params);
     }
 }

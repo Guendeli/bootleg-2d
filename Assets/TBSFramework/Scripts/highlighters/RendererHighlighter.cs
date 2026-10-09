@@ -1,4 +1,4 @@
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace TurnBasedStrategyFramework.Unity.Highlighters
@@ -21,10 +21,10 @@ namespace TurnBasedStrategyFramework.Unity.Highlighters
             _mpb.SetColor(_propertyName, _color);
         }
 
-        public override Task Apply(IHighlightParams @params)
+        public override UniTask Apply(IHighlightParams @params)
         {
             _renderer.SetPropertyBlock(_mpb, _materialIndex);
-            return Task.CompletedTask;
+            return UniTask.CompletedTask;
         }
 
         public void SetColor(Color color)

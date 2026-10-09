@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using TurnBasedStrategyFramework.Common.Cells;
 using TurnBasedStrategyFramework.Common.Pathfinding.Algorithms;
 
@@ -160,6 +160,6 @@ namespace TurnBasedStrategyFramework.Common.Units
         /// <param name="path">The path the unit will follow.</param>
         /// <param name="destination">The destination cell.</param>
         /// <returns>A task representing the asynchronous animation of the movement.</returns>
-        public abstract Task MovementAnimation(IEnumerable<ICell> path, ICell destination);
+        public abstract UniTask MovementAnimation(IEnumerable<ICell> path, ICell destination);
     }
 }

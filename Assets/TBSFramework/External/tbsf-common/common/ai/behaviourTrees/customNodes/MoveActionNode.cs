@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using TurnBasedStrategyFramework.Common.AI.Evaluators;
 using TurnBasedStrategyFramework.Common.Cells;
 using TurnBasedStrategyFramework.Common.Controllers;
@@ -35,7 +35,7 @@ namespace TurnBasedStrategyFramework.Common.AI.BehaviourTrees
         /// Executes the move action by evaluating potential destinations and moving the unit to the best available position.
         /// </summary>
         /// <returns>A task representing the execution, with a boolean result indicating success or failure of the move action.</returns>
-        public Task<bool> Execute(bool debugMode)
+        public UniTask<bool> Execute(bool debugMode)
         {
             foreach (var positionEvaluator in _positionEvaluators)
             {
@@ -58,7 +58,7 @@ namespace TurnBasedStrategyFramework.Common.AI.BehaviourTrees
 
             if (topDestination.Equals(_unit.CurrentCell))
             {
-                return Task.FromResult(false);
+                return UniTask.FromResult(false);
             }
 
             var fullPath = _unit.FindPath(topDestination, _gridController.CellManager).ToList();
@@ -77,7 +77,7 @@ namespace TurnBasedStrategyFramework.Common.AI.BehaviourTrees
 
             if (!reachablePath.Any())
             {
-                return Task.FromResult(false);
+                return UniTask.FromResult(false);
             }
 
             var bestCell = scores
@@ -87,7 +87,7 @@ namespace TurnBasedStrategyFramework.Common.AI.BehaviourTrees
 
             var trimmedPath = reachablePath.TakeWhile(c => !c.Equals(bestCell)).Append(bestCell).ToList();
 
-            var tcs = new TaskCompletionSource<bool>();
+            var tcs = new UniTaskCompletionSource<bool>();
             _unit.AIExecuteAbility(new MoveCommand(_unit.CurrentCell, bestCell, trimmedPath), _gridController, tcs);
             return tcs.Task;
         }

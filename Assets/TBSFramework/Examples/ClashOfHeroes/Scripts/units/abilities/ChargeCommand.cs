@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using TurnBasedStrategyFramework.Common.Cells;
 using TurnBasedStrategyFramework.Common.Controllers;
 using TurnBasedStrategyFramework.Common.Units;
@@ -25,7 +25,7 @@ namespace TurnBasedStrategyFramework.Unity.Examples.ClashOfHeroes.Units.Abilitie
             _damage = damage;
         }
 
-        public async Task Execute(IUnit unit, IGridController controller)
+        public async UniTask Execute(IUnit unit, IGridController controller)
         {
             void handler(UnitChangedGridPositionEventArgs eventArgs) => OnUnitLeftCell(eventArgs, unit, controller.CellManager, _destination);
             unit.UnitLeftCell += handler;
@@ -80,7 +80,7 @@ namespace TurnBasedStrategyFramework.Unity.Examples.ClashOfHeroes.Units.Abilitie
             }
         }
 
-        public Task Undo(IUnit unit, IGridController controller)
+        public UniTask Undo(IUnit unit, IGridController controller)
         {
             throw new NotImplementedException();
         }

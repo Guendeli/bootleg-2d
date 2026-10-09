@@ -1,5 +1,5 @@
 using System.Threading;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using TMPro;
 using TurnBasedStrategyFramework.Unity.Controllers;
 using UnityEngine;
@@ -47,7 +47,7 @@ namespace TurnBasedStrategyFramework.Unity.Examples.ClashOfHeroes.UI
             }
         }
 
-        private async Task AnimateTurnTransitionAsync(CancellationToken cancellationToken)
+        private async UniTask AnimateTurnTransitionAsync(CancellationToken cancellationToken)
         {
             RectTransform panelRect = _turnTransitionPanel.GetComponent<RectTransform>();
             float elapsedTime = 0f;
@@ -58,7 +58,7 @@ namespace TurnBasedStrategyFramework.Unity.Examples.ClashOfHeroes.UI
                 float curveValue = _animationCurve.Evaluate(t);
                 panelRect.anchoredPosition = Vector2.Lerp(_startPosition, _finishPosition, curveValue);
 
-                await Awaitable.NextFrameAsync();
+                await UniTask.NextFrame();
                 elapsedTime += Time.deltaTime;
             }
 

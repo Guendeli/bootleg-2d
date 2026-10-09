@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using TurnBasedStrategyFramework.Common.Controllers;
 using TurnBasedStrategyFramework.Common.Utilities;
 
@@ -44,42 +44,42 @@ namespace TurnBasedStrategyFramework.Common.Cells
         /// </summary>
         /// <param name="cells">The cells to unmark.</param>
         /// <returns>A task representing the asynchronous unmarking operation.</returns>
-        Task UnMark(IEnumerable<ICell> cells);
+        UniTask UnMark(IEnumerable<ICell> cells);
 
         /// <summary>
         /// Unmarks the specified cell, typically used to reset their visual representation.
         /// </summary>
         /// <param name="cells">The cells to unmark.</param>
         /// <returns>A task representing the asynchronous unmarking operation.</returns>
-        Task UnMark(ICell cell);
+        UniTask UnMark(ICell cell);
 
         /// <summary>
         /// Marks the specified cell as selected, typically used for indicating the current focus or selection.
         /// </summary>
         /// <param name="cell">The cell to mark as selected.</param>
         /// <returns>A task representing the asynchronous marking operation.</returns>
-        Task MarkAsHighlighted(ICell cell);
+        UniTask MarkAsHighlighted(ICell cell);
 
         /// <summary>
         /// Unmarks the specified cell as selected, typically used to remove visual indicators of selection.
         /// </summary>
         /// <param name="cell">The cell to unmark as selected.</param>
         /// <returns>A task representing the asynchronous unmarking operation.</returns>
-        Task UnMarkAsHighlighted(ICell cell);
+        UniTask UnMarkAsHighlighted(ICell cell);
 
         /// <summary>
         /// Marks the specified cells as reachable, typically used to indicate potential movement destinations.
         /// </summary>
         /// <param name="cells">The cells to mark as reachable.</param>
         /// <returns>A task representing the asynchronous marking operation.</returns>
-        Task MarkAsReachable(IEnumerable<ICell> cells);
+        UniTask MarkAsReachable(IEnumerable<ICell> cells);
 
         /// <summary>
         /// Marks the specified cell as reachable, typically used to indicate potential movement destination.
         /// </summary>
         /// <param name="cells">The cells to mark as reachable.</param>
         /// <returns>A task representing the asynchronous marking operation.</returns>
-        Task MarkAsReachable(ICell cell);
+        UniTask MarkAsReachable(ICell cell);
 
         /// <summary>
         /// Marks the specified cells as part of a path, typically used to indicate a planned movement path.
@@ -87,7 +87,7 @@ namespace TurnBasedStrategyFramework.Common.Cells
         /// <param name="cells">The cells that form part of the path.</param>
         /// <param name="originCell">The origin cell from which the path starts.</param>
         /// <returns>A task representing the asynchronous marking operation.</returns>
-        Task MarkAsPath(IEnumerable<ICell> cells, ICell originCell);
+        UniTask MarkAsPath(IEnumerable<ICell> cells, ICell originCell);
 
         void SetColor(ICell cell, float r, float g, float b, float a);
     }

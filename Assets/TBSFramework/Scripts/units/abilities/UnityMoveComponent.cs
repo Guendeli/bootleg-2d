@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using TurnBasedStrategyFramework.Common.Cells;
 using TurnBasedStrategyFramework.Common.Units;
 using TurnBasedStrategyFramework.Unity.Utilities;
@@ -16,7 +16,7 @@ namespace TurnBasedStrategyFramework.Unity.Units.Abilities
         {
         }
 
-        public override async Task MovementAnimation(IEnumerable<ICell> path, ICell destination)
+        public override async UniTask MovementAnimation(IEnumerable<ICell> path, ICell destination)
         {
             var currentCell = _unitReference.CurrentCell;
             foreach (var cell in path)
@@ -25,7 +25,7 @@ namespace TurnBasedStrategyFramework.Unity.Units.Abilities
                 while (!_unitReference.WorldPosition.Equals(cell.WorldPosition))
                 {
                     _unitReference.WorldPosition = Vector3.MoveTowards(_unitReference.WorldPosition.ToVector3(), cell.WorldPosition.ToVector3(), Time.deltaTime * _unitReference.MovementAnimationSpeed).ToIVector3();
-                    await Awaitable.NextFrameAsync();
+                    await UniTask.NextFrame();
                 }
 
                 _unitReference.InvokeUnitEnteredCell(new UnitChangedGridPositionEventArgs(_unitReference, currentCell, cell));

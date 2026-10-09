@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 
 namespace TurnBasedStrategyFramework.Common.Network
 {
@@ -94,7 +94,7 @@ namespace TurnBasedStrategyFramework.Common.Network
         /// Get a list of available public rooms.
         /// </summary>
         /// <returns>A task that represents the asynchronous operation. The task result contains a collection of RoomData.</returns>
-        Task<IEnumerable<RoomData>> GetRoomList();
+        UniTask<IEnumerable<RoomData>> GetRoomList();
 
         /// <summary>
         /// Send the current match state to other players in the room.

@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using TurnBasedStrategyFramework.Common.Cells;
 using TurnBasedStrategyFramework.Common.Controllers;
 using TurnBasedStrategyFramework.Common.Units;
@@ -34,7 +34,7 @@ namespace TurnBasedStrategyFramework.Unity.Examples.Legacy.Example4.Units.Abilit
             this.cost = cost;
         }
 
-        public async Task Execute(IUnit unit, IGridController controller)
+        public async UniTask Execute(IUnit unit, IGridController controller)
         {
             var unitGO = GameObject.Instantiate(unitPrefab, spawnCell.WorldPosition.ToVector3(), Quaternion.identity);
             var spawnedUnit = unitGO.GetComponent<Unit>();
@@ -63,9 +63,9 @@ namespace TurnBasedStrategyFramework.Unity.Examples.Legacy.Example4.Units.Abilit
             await spawnedUnit.MarkAsFinished();
         }
 
-        public Task Undo(IUnit unit, IGridController controller)
+        public UniTask Undo(IUnit unit, IGridController controller)
         {
-            return Task.CompletedTask;
+            return UniTask.CompletedTask;
         }
 
         public Dictionary<string, object> Serialize()

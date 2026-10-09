@@ -1,4 +1,4 @@
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using TurnBasedStrategyFramework.Common.Controllers;
 using TurnBasedStrategyFramework.Common.Units.Abilities;
 using TurnBasedStrategyFramework.Unity.Units.Abilities;
@@ -33,7 +33,7 @@ namespace TurnBasedStrategyFramework.Unity.Examples.ClashOfHeroes.Units.Abilitie
 
         protected void HumanExecuteAbility(ICommand command, IGridController gridController, bool isNetworkInvoked = false)
         {
-            UnitReference.HumanExecuteAbility(command, gridController, (_) => Task.CompletedTask, (_) => { Charges--; (UnitReference as ITurnAbilityLimit).AbilityUsePoints--; return Task.CompletedTask; }, isNetworkInvoked);
+            UnitReference.HumanExecuteAbility(command, gridController, (_) => UniTask.CompletedTask, (_) => { Charges--; (UnitReference as ITurnAbilityLimit).AbilityUsePoints--; return UniTask.CompletedTask; }, isNetworkInvoked);
         }
 
         public override bool CanPerform(IGridController gridController)

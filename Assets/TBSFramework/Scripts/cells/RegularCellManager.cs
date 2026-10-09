@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using TurnBasedStrategyFramework.Common.Cells;
 using TurnBasedStrategyFramework.Common.Controllers;
 using TurnBasedStrategyFramework.Common.Utilities;
@@ -43,7 +43,7 @@ namespace TurnBasedStrategyFramework.Unity.Cells
         /// Marks the specified cell as highlighted by delegating to the <see cref="Cell"/> implementation.
         /// </summary>
         /// <param name="cell">The cell to highlight.</param>
-        public override async Task MarkAsHighlighted(ICell cell)
+        public override async UniTask MarkAsHighlighted(ICell cell)
         {
             await (cell as Cell).MarkAsHighlighted();
         }
@@ -52,7 +52,7 @@ namespace TurnBasedStrategyFramework.Unity.Cells
         /// Unmarks the specified cell by delegating to the <see cref="Cell"/> implementation.
         /// </summary>
         /// <param name="cell">The cell to unmark.</param>
-        public override async Task UnMarkAsHighlighted(ICell cell)
+        public override async UniTask UnMarkAsHighlighted(ICell cell)
         {
             await (cell as Cell).UnMark();
         }
@@ -62,7 +62,7 @@ namespace TurnBasedStrategyFramework.Unity.Cells
         /// </summary>
         /// <param name="cells">The cells forming the path.</param>
         /// <param name="originCell">The origin cell of the path.</param>
-        public override async Task MarkAsPath(IEnumerable<ICell> cells, ICell originCell)
+        public override async UniTask MarkAsPath(IEnumerable<ICell> cells, ICell originCell)
         {
             var path = cells.ToList();
             for (int i = 0; i < path.Count; i++)
@@ -76,16 +76,16 @@ namespace TurnBasedStrategyFramework.Unity.Cells
         /// Unmarks the specified cells by delegating to each cell's <see cref="Cell.UnMark"/> implementation.
         /// </summary>
         /// <param name="cells">The cells to unmark.</param>
-        public override async Task UnMark(IEnumerable<ICell> cells)
+        public override async UniTask UnMark(IEnumerable<ICell> cells)
         {
-            await Task.WhenAll(cells.Select(cell => (cell as Cell).UnMark()));
+            await UniTask.WhenAll(cells.Select(cell => (cell as Cell).UnMark()));
         }
 
         /// <summary>
         /// Unmarks the specified cell by delegating <see cref="Cell.UnMark"/> implementation.
         /// </summary>
         /// <param name="cells">The cells to unmark.</param>
-        public override async Task UnMark(ICell cell)
+        public override async UniTask UnMark(ICell cell)
         {
             await (cell as Cell).UnMark();
         }
@@ -94,7 +94,7 @@ namespace TurnBasedStrategyFramework.Unity.Cells
         /// Marks the specified cells as reachable by delegating to each cell's <see cref="Cell"/> implementation.
         /// </summary>
         /// <param name="cells">The cells to mark as reachable.</param>
-        public override async Task MarkAsReachable(IEnumerable<ICell> cells)
+        public override async UniTask MarkAsReachable(IEnumerable<ICell> cells)
         {
             foreach (var cell in cells)
             {
@@ -106,7 +106,7 @@ namespace TurnBasedStrategyFramework.Unity.Cells
         /// Marks the specified cell as reachable by delegating to cell's <see cref="Cell"/> implementation.
         /// </summary>
         /// <param name="cells">The cells to mark as reachable.</param>
-        public override async Task MarkAsReachable(ICell cell)
+        public override async UniTask MarkAsReachable(ICell cell)
         {
             await (cell as Cell).MarkAsReachable();
         }

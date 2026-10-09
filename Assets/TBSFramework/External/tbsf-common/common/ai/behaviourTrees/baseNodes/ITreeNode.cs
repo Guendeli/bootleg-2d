@@ -1,4 +1,4 @@
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 
 namespace TurnBasedStrategyFramework.Common.AI.BehaviourTrees
 {
@@ -11,6 +11,6 @@ namespace TurnBasedStrategyFramework.Common.AI.BehaviourTrees
         /// Executes the behavior represented by this tree node.
         /// </summary>
         /// <returns>A task representing the execution, with a boolean result indicating success or failure.</returns>
-        Task<bool> Execute(bool debugMode);
+        UniTask<bool> Execute(bool debugMode);
     }
 }

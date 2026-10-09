@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using TurnBasedStrategyFramework.Common.Cells;
 using TurnBasedStrategyFramework.Common.Controllers;
 using TurnBasedStrategyFramework.Common.Utilities;
@@ -49,7 +49,7 @@ namespace TurnBasedStrategyFramework.Common.Units.Abilities
         /// <param name="unit">The unit to be moved.</param>
         /// <param name="controller">The grid controller.</param>
         /// <returns>A task representing the asynchronous execution of the move.</returns>
-        public async Task Execute(IUnit unit, IGridController controller)
+        public async UniTask Execute(IUnit unit, IGridController controller)
         {
             unit.CurrentCell.IsTaken = false;
             unit.CurrentCell.CurrentUnits.Remove(unit);
@@ -75,7 +75,7 @@ namespace TurnBasedStrategyFramework.Common.Units.Abilities
         /// <param name="unit">The unit for which the move should be undone.</param>
         /// <param name="controller">The grid controller.</param>
         /// <returns>A task representing the asynchronous undo operation.</returns>
-        public readonly Task Undo(IUnit unit, IGridController controller)
+        public readonly UniTask Undo(IUnit unit, IGridController controller)
         {
             unit.CurrentCell = _source;
             unit.WorldPosition = _source.WorldPosition;
@@ -83,7 +83,7 @@ namespace TurnBasedStrategyFramework.Common.Units.Abilities
             _source.IsTaken = true;
             _destination.IsTaken = false;
 
-            return Task.CompletedTask;
+            return UniTask.CompletedTask;
         }
 
         private static class SerializationKeys

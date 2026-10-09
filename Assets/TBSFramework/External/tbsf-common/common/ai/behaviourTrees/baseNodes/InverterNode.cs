@@ -1,4 +1,4 @@
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 
 namespace TurnBasedStrategyFramework.Common.AI.BehaviourTrees
 {
@@ -27,7 +27,7 @@ namespace TurnBasedStrategyFramework.Common.AI.BehaviourTrees
         /// If the child returns true, this node returns false, and vice versa.
         /// </summary>
         /// <returns>A task representing the execution, with a boolean result indicating the inverted success or failure of the child node.</returns>
-        public readonly async Task<bool> Execute(bool debugMode)
+        public readonly async UniTask<bool> Execute(bool debugMode)
         {
             var result = await _node.Execute(debugMode);
             return !result;

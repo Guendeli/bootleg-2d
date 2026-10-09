@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using TurnBasedStrategyFramework.Common.Controllers;
 
 namespace TurnBasedStrategyFramework.Common.Units.Abilities
@@ -45,13 +45,13 @@ namespace TurnBasedStrategyFramework.Common.Units.Abilities
         /// <param name="unit">The unit performing the attack.</param>
         /// <param name="controller">The grid controller responsible for managing the game state.</param>
         /// <returns>A task representing the asynchronous execution of the attack.</returns>
-        public async Task Execute(IUnit unit, IGridController controller)
+        public async UniTask Execute(IUnit unit, IGridController controller)
         {
             _target.ModifyHealth(-_damage, unit);
             _target.InvokeAttacked(new UnitAttackedEventArgs(_target, unit, _damage));
             unit.ActionPoints -= _actionCost;
 
-            await Task.WhenAll(
+            await UniTask.WhenAll(
                 controller.UnitManager.MarkAsAttacking(unit, _target),
                 controller.UnitManager.MarkAsDefending(_target, unit)
             );
@@ -63,12 +63,12 @@ namespace TurnBasedStrategyFramework.Common.Units.Abilities
         /// <param name="unit">The unit that performed the attack.</param>
         /// <param name="controller">The grid controller responsible for managing the game state.</param>
         /// <returns>A task representing the asynchronous undo operation.</returns>
-        public Task Undo(IUnit unit, IGridController controller)
+        public UniTask Undo(IUnit unit, IGridController controller)
         {
             _target?.ModifyHealth(+_damage, unit);
             unit.ActionPoints += _actionCost;
 
-            return Task.CompletedTask;
+            return UniTask.CompletedTask;
         }
 
         private static class SerializationKeys

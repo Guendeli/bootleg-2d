@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using TurnBasedStrategyFramework.Common.Cells;
 using TurnBasedStrategyFramework.Common.Controllers;
 using TurnBasedStrategyFramework.Common.Players;
@@ -67,48 +67,48 @@ namespace TurnBasedStrategyFramework.Unity.Units
             return _units.Where(u => u.PlayerNumber != playerNumber);
         }
 
-        public async Task UnMark(IEnumerable<IUnit> units)
+        public async UniTask UnMark(IEnumerable<IUnit> units)
         {
-            await Task.WhenAll(units.Select(u => (u as Unit).UnMark()));
+            await UniTask.WhenAll(units.Select(u => (u as Unit).UnMark()));
         }
-        public async Task MarkAsSelected(IUnit unit)
+        public async UniTask MarkAsSelected(IUnit unit)
         {
             await (unit as Unit).MarkAsSelected();
         }
-        public async Task MarkAsFriendly(IEnumerable<IUnit> units)
+        public async UniTask MarkAsFriendly(IEnumerable<IUnit> units)
         {
-            await Task.WhenAll(units.Select(u => (u as Unit).MarkAsFriendly()));
+            await UniTask.WhenAll(units.Select(u => (u as Unit).MarkAsFriendly()));
         }
-        public async Task MarkAsFinished(IEnumerable<IUnit> units)
+        public async UniTask MarkAsFinished(IEnumerable<IUnit> units)
         {
-            await Task.WhenAll(units.Select(u => (u as Unit).MarkAsFinished()));
+            await UniTask.WhenAll(units.Select(u => (u as Unit).MarkAsFinished()));
         }
-        public async Task MarkAsTargetable(IEnumerable<IUnit> units)
+        public async UniTask MarkAsTargetable(IEnumerable<IUnit> units)
         {
-            await Task.WhenAll(units.Select(u => (u as Unit).MarkAsTargetable()));
+            await UniTask.WhenAll(units.Select(u => (u as Unit).MarkAsTargetable()));
         }
-        public async Task MarkAsAttacking(IUnit unit, IUnit target)
+        public async UniTask MarkAsAttacking(IUnit unit, IUnit target)
         {
             var targetUnit = target as Unit;
             await (unit as Unit).MarkAsAttacking(targetUnit);
         }
-        public async Task MarkAsDefending(IUnit unit, IUnit aggressor)
+        public async UniTask MarkAsDefending(IUnit unit, IUnit aggressor)
         {
             var aggressorUnit = aggressor as Unit;
             await (unit as Unit).MarkAsDefending(aggressorUnit);
         }
 
-        public async Task MarkAsMoving(IUnit unit, ICell source, ICell destination, IEnumerable<ICell> path)
+        public async UniTask MarkAsMoving(IUnit unit, ICell source, ICell destination, IEnumerable<ICell> path)
         {
             await (unit as Unit).MarkAsMoving(source, destination, path);
         }
 
-        public async Task UnMarkAsMoving(IUnit unit, ICell source, ICell destination, IEnumerable<ICell> path)
+        public async UniTask UnMarkAsMoving(IUnit unit, ICell source, ICell destination, IEnumerable<ICell> path)
         {
             await (unit as Unit).UnMarkAsMoving(source, destination, path);
         }
 
-        public async Task MarkAsDestroyed(IUnit unit)
+        public async UniTask MarkAsDestroyed(IUnit unit)
         {
             await (unit as Unit).MarkAsDestroyed();
         }
