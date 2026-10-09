@@ -51,7 +51,7 @@ namespace Bootleg.Ball
         {
             if (_targets.TryGetValue(unit, out var ball))
             {
-                var succeeded = Random.value < _successChance;
+                var succeeded = InterceptionRules.Succeeds(_successChance, () => Random.value);
                 UnitReference.HumanExecuteAbility(new TackleCommand(unit, ball, succeeded, _actionCost), gridController);
             }
             else if (!ReferenceEquals(unit, UnitReference) && gridController.TurnContext.PlayableUnits().Contains(unit))

@@ -35,12 +35,41 @@ namespace Bootleg.Units
     {
         [SerializeField] private UnitDefinition _definition;
 
-        [Tooltip("Action menu entries. The first one is chosen when the unit is selected. " +
+        [Tooltip("Action menu entries. The first available one is chosen when the unit is selected. " +
                  "Empty = all ability components are active at once (plain TBSF behaviour).")]
         [SerializeField] private List<UnitAction> _actions = new List<UnitAction>();
 
+        private IGridController _gridController;
+        private int _chosenActionIndex;
+
         public IReadOnlyList<UnitAction> Actions => _actions;
-        public int ActiveActionIndex { get; private set; }
+
+        /// <summary>
+        /// The action whose abilities are active: the one last chosen, or the first available action if the chosen
+        /// one can no longer be performed (e.g. Move after all movement points are spent). -1 if there are no actions.
+        /// </summary>
+        public int ActiveActionIndex
+        {
+            get
+            {
+                if (_actions.Count == 0)
+                {
+                    return -1;
+                }
+                if (_gridController == null || CanPerform(_actions[_chosenActionIndex], _gridController))
+                {
+                    return _chosenActionIndex;
+                }
+                for (var i = 0; i < _actions.Count; i++)
+                {
+                    if (CanPerform(_actions[i], _gridController))
+                    {
+                        return i;
+                    }
+                }
+                return _chosenActionIndex;
+            }
+        }
 
         public UnitDefinition Definition => _definition;
 
@@ -72,6 +101,7 @@ namespace Bootleg.Units
 
             base.Initialize(gridController);
 
+            _gridController = gridController;
             Stats.Changed += OnStatsChanged;
         }
 
@@ -110,7 +140,7 @@ namespace Bootleg.Units
         /// <summary>Switches the active action and re-selects the unit with its abilities.</summary>
         public void SelectAction(int index, IGridController gridController)
         {
-            ActiveActionIndex = index;
+            _chosenActionIndex = index;
             gridController.GridState = new GridStateUnitSelected(this, GetBaseAbilities());
         }
 
@@ -127,7 +157,7 @@ namespace Bootleg.Units
         // Forward them to the other abilities so none miss their lifecycle callbacks.
         public override void OnTurnStart(IGridController gridController)
         {
-            ActiveActionIndex = 0;
+            _chosenActionIndex = 0;
             base.OnTurnStart(gridController);
             foreach (var ability in InactiveAbilities())
             {
@@ -155,8 +185,38 @@ namespace Bootleg.Units
             return base.IsCellMovableTo(cell) || BallMoveRules.HoldsOnlyLooseBalls(cell);
         }
 
+        // Zone of control for the ball carrier: cells next to an enemy can be entered but not passed through,
+        // so the pathfinder routes around defenders where it can. Leaving the starting cell is always allowed.
+        // Off-ball units move freely. Only set while CachePaths runs, which is the only time edges are evaluated.
+        private HashSet<ICell> _enemyZoneCells;
+
+        public override void CachePaths(ICellManager cellManager)
+        {
+            _enemyZoneCells = _gridController != null && BallInterception.FindCarriedBall(this, _gridController) != null
+                ? BallInterception.EnemyZoneCells(this, cellManager)
+                : null;
+            try
+            {
+                base.CachePaths(cellManager);
+            }
+            finally
+            {
+                _enemyZoneCells = null;
+            }
+        }
+
+        // Zone cells can be entered but have no outgoing edges, so they must still be in the graph for Dijkstra.
+        public override Dictionary<ICell, Dictionary<ICell, float>> GetGraphEdges(ICellManager cellManager)
+        {
+            return PathGraph.AddDeadEnds(base.GetGraphEdges(cellManager));
+        }
+
         public override bool IsCellTraversable(ICell source, ICell destination)
         {
+            if (_enemyZoneCells != null && _enemyZoneCells.Contains(source) && !source.Equals(CurrentCell))
+            {
+                return false;
+            }
             return base.IsCellTraversable(source, destination) || BallMoveRules.HoldsOnlyLooseBalls(destination);
         }
 
@@ -200,8 +260,9 @@ namespace Bootleg.Units
             AddAction("Attack", abilities.Where(a => a is AttackAbility));
             AddAction("Push", abilities.Where(a => a is PushBallAbility));
             AddAction("Kick", abilities.Where(a => a is KickAbility));
+            AddAction("Pass", abilities.Where(a => a is PassAbility));
             AddAction("Tackle", abilities.Where(a => a is TackleAbility));
-            ActiveActionIndex = 0;
+            _chosenActionIndex = 0;
 #if UNITY_EDITOR
             UnityEditor.EditorUtility.SetDirty(this);
 #endif
@@ -228,6 +289,7 @@ namespace Bootleg.Units
                 { StatType.Attack, AttackFactor },
                 { StatType.Defence, DefenceFactor },
                 { StatType.KickPower, UnitDefinition.DefaultKickPower },
+                { StatType.Interception, UnitDefinition.DefaultInterception },
             });
         }
     }

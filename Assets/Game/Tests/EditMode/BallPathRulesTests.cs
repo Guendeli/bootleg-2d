@@ -136,6 +136,84 @@ namespace Bootleg.Tests
             Assert.IsEmpty(BallPathRules.GetKickTargets(Cell(2, 2), 3, CellAt));
         }
 
+        private Dictionary<ICell, List<ICell>> Pass(ICell carrier, int power, params ICell[] receivers)
+        {
+            foreach (var receiver in receivers)
+            {
+                receiver.IsTaken = true;
+            }
+            return BallPathRules.GetPassTargets(carrier, power, CellAt, c => receivers.Contains(c));
+        }
+
+        [Test]
+        public void Pass_ReachesTeammateWithinPower_PathEndsOnReceiver()
+        {
+            var targets = Pass(Cell(1, 2), 3, Cell(4, 2));
+
+            CollectionAssert.AreEqual(new[] { Cell(2, 2), Cell(3, 2), Cell(4, 2) }, targets[Cell(4, 2)]);
+        }
+
+        [Test]
+        public void Pass_TeammateBeyondPower_NotATarget()
+        {
+            Assert.IsEmpty(Pass(Cell(1, 2), 2, Cell(4, 2)));
+        }
+
+        [Test]
+        public void Pass_BlockedByNonReceiverInBetween()
+        {
+            Cell(2, 2).IsTaken = true;
+
+            Assert.IsEmpty(Pass(Cell(1, 2), 5, Cell(4, 2)));
+        }
+
+        [Test]
+        public void Pass_OnlyNearestUnitInEachLineCounts()
+        {
+            var targets = Pass(Cell(0, 2), 5, Cell(2, 2), Cell(4, 2));
+
+            CollectionAssert.AreEquivalent(new[] { Cell(2, 2) }, targets.Keys);
+        }
+
+        [Test]
+        public void Pass_FindsReceiversInSeveralDirections()
+        {
+            var targets = Pass(Cell(2, 2), 3, Cell(2, 4), Cell(0, 2));
+
+            CollectionAssert.AreEquivalent(new[] { Cell(2, 4), Cell(0, 2) }, targets.Keys);
+        }
+
+        [Test]
+        public void Pass_DiagonalTeammate_NotATarget()
+        {
+            Assert.IsEmpty(Pass(Cell(2, 2), 3, Cell(3, 3)));
+        }
+
+        [Test]
+        public void Kick_FliesOverEnemy_ButCannotLandOnIt()
+        {
+            var enemy = Cell(3, 2);
+            enemy.IsTaken = true;
+
+            var targets = BallPathRules.GetKickTargets(Cell(2, 2), 3, CellAt, c => c == enemy);
+
+            Assert.IsFalse(targets.ContainsKey(enemy));
+            CollectionAssert.AreEqual(new[] { Cell(3, 2), Cell(4, 2) }, targets[Cell(4, 2)]);
+        }
+
+        [Test]
+        public void Pass_FliesOverEnemyToTeammateBehind()
+        {
+            var enemy = Cell(2, 2);
+            enemy.IsTaken = true;
+            var receiver = Cell(4, 2);
+            receiver.IsTaken = true;
+
+            var targets = BallPathRules.GetPassTargets(Cell(1, 2), 5, CellAt, c => c == receiver, c => c == enemy);
+
+            CollectionAssert.AreEqual(new[] { Cell(2, 2), Cell(3, 2), Cell(4, 2) }, targets[receiver]);
+        }
+
         [Test]
         public void EmptyWhenPowerIsZero()
         {

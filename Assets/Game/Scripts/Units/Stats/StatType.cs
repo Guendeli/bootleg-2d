@@ -13,5 +13,7 @@ namespace Bootleg.Units.Stats
         Defence,
         /// <summary>How many cells a push sends the ball.</summary>
         KickPower,
+        /// <summary>Chance (0..1) to intercept a pass, kick or dribble passing this unit.</summary>
+        Interception,
     }
 }

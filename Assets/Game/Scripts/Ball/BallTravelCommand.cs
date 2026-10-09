@@ -11,8 +11,9 @@ using TurnBasedStrategyFramework.Common.Utilities;
 namespace Bootleg.Ball
 {
     /// <summary>
-    /// Sends the ball along a precomputed path: a push (loose ball) or a kick (ball carried by the executing unit,
-    /// which loses possession). Executed by the pushing/kicking unit, which pays the action cost; the ball is the unit that moves.
+    /// Sends the ball along a precomputed path: a push (loose ball), a kick (ball carried by the executing unit,
+    /// which loses possession) or a pass (a kick that ends on a receiver, who takes possession).
+    /// Executed by the pushing/kicking unit, which pays the action cost; the ball is the unit that moves.
     /// </summary>
     public readonly struct BallTravelCommand : ICommand
     {
@@ -21,15 +22,18 @@ namespace Bootleg.Ball
         private readonly IReadOnlyList<ICell> _path;
         private readonly int _actionCost;
         private readonly bool _isKick;
+        private readonly IUnit _receiver;
 
         /// <param name="isKick">True if the executing unit carries the ball and kicks it away.</param>
-        public BallTravelCommand(IUnit ball, ICell source, IReadOnlyList<ICell> path, int actionCost, bool isKick = false)
+        /// <param name="receiver">For a pass: the unit on the last path cell, who takes the ball on arrival.</param>
+        public BallTravelCommand(IUnit ball, ICell source, IReadOnlyList<ICell> path, int actionCost, bool isKick = false, IUnit receiver = null)
         {
             _ball = ball;
             _source = source;
             _path = path;
             _actionCost = actionCost;
-            _isKick = isKick;
+            _isKick = isKick || receiver != null;
+            _receiver = receiver;
         }
 
         private ICell Destination => _path[_path.Count - 1];
@@ -53,15 +57,25 @@ namespace Bootleg.Ball
             _ball.CurrentCell = destination;
             destination.CurrentUnits.Add(_ball);
 
+            if (_receiver != null && _ball is BallUnit receivedBall)
+            {
+                receivedBall.TakePossession(_receiver);
+            }
+
             await controller.UnitManager.UnMarkAsMoving(_ball, _source, destination, _path);
             _ball.InvokeUnitMoved(new UnitMovedEventArgs(_ball, _source, destination, _path));
         }
 
         public UniTask Undo(IUnit unit, IGridController controller)
         {
+            if (_receiver != null && _ball is BallUnit receivedBall)
+            {
+                receivedBall.Release();
+            }
+
             var destination = Destination;
-            destination.IsTaken = false;
             destination.CurrentUnits.Remove(_ball);
+            destination.IsTaken = destination.CurrentUnits.Count > 0;
 
             _ball.CurrentCell = _source;
             _ball.WorldPosition = _source.WorldPosition;
@@ -83,6 +97,7 @@ namespace Bootleg.Ball
             public const string Path = "path";
             public const string ActionCost = "actionCost";
             public const string IsKick = "isKick";
+            public const string Receiver = "receiver";
 
             public const string X = "x";
             public const string Y = "y";
@@ -103,7 +118,8 @@ namespace Bootleg.Ball
                 { SerializationKeys.Source, SerializeCoordinates(_source) },
                 { SerializationKeys.Path, _path.Select(SerializeCoordinates).ToArray() },
                 { SerializationKeys.ActionCost, _actionCost },
-                { SerializationKeys.IsKick, _isKick }
+                { SerializationKeys.IsKick, _isKick },
+                { SerializationKeys.Receiver, _receiver?.UnitID ?? -1 }
             };
         }
 
@@ -127,7 +143,10 @@ namespace Bootleg.Ball
 
             var isKick = actionParams.TryGetValue(SerializationKeys.IsKick, out var kick) && Convert.ToBoolean(kick);
 
-            return new BallTravelCommand(ball, source, path, actionCost, isKick);
+            var receiverId = actionParams.TryGetValue(SerializationKeys.Receiver, out var receiverValue) ? Convert.ToInt32(receiverValue) : -1;
+            var receiver = receiverId >= 0 ? gridController.UnitManager.GetUnits().First(u => u.UnitID == receiverId) : null;
+
+            return new BallTravelCommand(ball, source, path, actionCost, isKick, receiver);
         }
     }
 }
