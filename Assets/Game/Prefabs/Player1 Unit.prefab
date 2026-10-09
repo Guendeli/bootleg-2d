@@ -90,9 +90,10 @@ GameObject:
   m_Component:
   - component: {fileID: 7139901449843538749}
   - component: {fileID: 232018564455111798}
-  - component: {fileID: 5466876838756724124}
   - component: {fileID: 6690911799131170672}
   - component: {fileID: -987196005635959891}
+  - component: {fileID: 5512708083755077712}
+  - component: {fileID: -5892823110541515203}
   m_Layer: 0
   m_Name: Player1 Unit
   m_TagString: Untagged
@@ -159,20 +160,17 @@ MonoBehaviour:
   _attackFactor: 1
   _defenceFactor: 1
   _definition: {fileID: 11400000, guid: 6d93301780cdf45b09085c98fbd6953c, type: 2}
---- !u!114 &5466876838756724124
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 889404546449052493}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 08c81fb425c382746b3a3d2772a086b4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _withConfirmation: 0
-  _useTouchOptimizedControls: 0
+  _actions:
+  - Label: Move
+    Abilities:
+    - {fileID: -987196005635959891}
+    - {fileID: 5512708083755077712}
+  - Label: Attack
+    Abilities:
+    - {fileID: 6690911799131170672}
+  - Label: Push
+    Abilities:
+    - {fileID: -5892823110541515203}
 --- !u!114 &6690911799131170672
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -197,6 +195,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 471e15ec64d52ae47a2ceb51ea418f36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &5512708083755077712
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 889404546449052493}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 113a21882a15b46ad8f52edf4002890f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Bootleg.Game::Bootleg.Abilities.FieldMoveAbility
+--- !u!114 &-5892823110541515203
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 889404546449052493}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 075d8978086594666851081207201f85, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Bootleg.Game::Bootleg.Ball.PushBallAbility
+  _actionCost: 1
+  _fallbackKickPower: 2
 --- !u!1 &1475985202764374347
 GameObject:
   m_ObjectHideFlags: 0

@@ -11,18 +11,18 @@ namespace Bootleg.Tests
 {
     public class BallPushRulesTests
     {
-        private Dictionary<Vector2IntImpl, FakeCell> _grid;
+        private Dictionary<Vector2IntImpl, TestCell> _grid;
 
         [SetUp]
         public void SetUp()
         {
             // 6x6 open grid
-            _grid = new Dictionary<Vector2IntImpl, FakeCell>();
+            _grid = new Dictionary<Vector2IntImpl, TestCell>();
             for (var x = 0; x < 6; x++)
             {
                 for (var y = 0; y < 6; y++)
                 {
-                    _grid[new Vector2IntImpl(x, y)] = new FakeCell(x, y);
+                    _grid[new Vector2IntImpl(x, y)] = new TestCell(x, y);
                 }
             }
         }
@@ -101,36 +101,6 @@ namespace Bootleg.Tests
         public void EmptyWhenPowerIsZero()
         {
             Assert.IsEmpty(Push(Cell(1, 2), Cell(2, 2), 0));
-        }
-
-        private class FakeCell : ICell
-        {
-            public FakeCell(int x, int y)
-            {
-                GridCoordinates = new Vector2IntImpl(x, y);
-            }
-
-            public event Action<ICell> CellHighlighted { add { } remove { } }
-            public event Action<ICell> CellDehighlighted { add { } remove { } }
-            public event Action<ICell> CellClicked { add { } remove { } }
-            public void InvokeCellHighlighted() { }
-            public void InvokeCellDehighlighted() { }
-            public void InvokeCellClicked() { }
-
-            public Vector2IntImpl GridCoordinates { get; set; }
-            public bool IsTaken { get; set; }
-            public IList<IUnit> CurrentUnits { get; } = new List<IUnit>();
-            public float MovementCost { get; set; } = 1;
-            public Vector3Impl WorldPosition { get; set; }
-
-            public int GetDistance(ICell otherCell) =>
-                Math.Abs(GridCoordinates.x - otherCell.GridCoordinates.x) + Math.Abs(GridCoordinates.y - otherCell.GridCoordinates.y);
-
-            public IEnumerable<ICell> GetNeighbours(ICellManager cellManager) => Enumerable.Empty<ICell>();
-
-            public bool Equals(ICell other) => other != null && GridCoordinates.Equals(other.GridCoordinates);
-
-            public override string ToString() => $"({GridCoordinates.x}, {GridCoordinates.y})";
         }
     }
 }

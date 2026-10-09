@@ -86,7 +86,8 @@ namespace Bootleg.Ball
             }
 
             var kickPower = KickPower;
-            foreach (var ball in gridController.UnitManager.GetUnits().OfType<BallUnit>())
+            // Only loose balls for now: taking the ball off a carrier (tackling) is a later iteration.
+            foreach (var ball in gridController.UnitManager.GetUnits().OfType<BallUnit>().Where(b => b.IsLoose))
             {
                 var path = BallPushRules.GetPushPath(UnitReference.CurrentCell, ball.CurrentCell, kickPower, gridController.CellManager.GetCellAt);
                 if (path.Count > 0)

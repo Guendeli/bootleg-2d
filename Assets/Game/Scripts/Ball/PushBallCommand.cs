@@ -36,8 +36,8 @@ namespace Bootleg.Ball
             unit.ActionPoints -= _actionCost;
 
             var destination = Destination;
-            _source.IsTaken = false;
             _source.CurrentUnits.Remove(_ball);
+            _source.IsTaken = _source.CurrentUnits.Count > 0;
 
             await controller.UnitManager.MarkAsMoving(_ball, _source, destination, _path);
             await _ball.MovementAnimation(_path, destination);
