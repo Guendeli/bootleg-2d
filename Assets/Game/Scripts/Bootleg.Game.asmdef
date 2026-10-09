@@ -3,7 +3,8 @@
     "rootNamespace": "Bootleg",
     "references": [
         "GUID:73e792cf0fd01b3438c14a3a994dd2ce",
-        "GUID:ba1d260f9e69eb6409c598826f52f7b9"
+        "GUID:ba1d260f9e69eb6409c598826f52f7b9",
+        "GUID:f51ebe6a0ceec4240a699833d6309b23"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

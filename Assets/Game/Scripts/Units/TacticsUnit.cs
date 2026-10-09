@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Bootleg.Units.Stats;
+using TurnBasedStrategyFramework.Common.Cells;
 using TurnBasedStrategyFramework.Common.Controllers;
 using TurnBasedStrategyFramework.Common.Units;
 using TurnBasedStrategyFramework.Unity.Units;
@@ -58,6 +59,11 @@ namespace Bootleg.Units
             base.Cleanup(gridController);
         }
 
+        public override bool IsUnitAttackable(IUnit otherUnit, ICell otherUnitCell, ICell attackSourceCell)
+        {
+            return otherUnit.PlayerNumber != Teams.Neutral && base.IsUnitAttackable(otherUnit, otherUnitCell, attackSourceCell);
+        }
+
         private void OnStatsChanged(UnitStats stats)
         {
             ApplyCombatStats();
@@ -94,6 +100,7 @@ namespace Bootleg.Units
                 { StatType.AttackRange, AttackRange },
                 { StatType.Attack, AttackFactor },
                 { StatType.Defence, DefenceFactor },
+                { StatType.KickPower, UnitDefinition.DefaultKickPower },
             });
         }
     }

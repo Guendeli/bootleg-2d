@@ -20,6 +20,9 @@ namespace Bootleg.Units
         [SerializeField, Min(0)] private int _attackRange = 1;
         [SerializeField, Min(0)] private int _attack = 1;
         [SerializeField, Min(0)] private int _defence = 1;
+        [SerializeField, Min(0)] private int _kickPower = DefaultKickPower;
+
+        public const int DefaultKickPower = 2;
 
         public string DisplayName => string.IsNullOrEmpty(_displayName) ? name : _displayName;
 
@@ -33,6 +36,7 @@ namespace Bootleg.Units
                 { StatType.AttackRange, _attackRange },
                 { StatType.Attack, _attack },
                 { StatType.Defence, _defence },
+                { StatType.KickPower, _kickPower },
             });
         }
     }
