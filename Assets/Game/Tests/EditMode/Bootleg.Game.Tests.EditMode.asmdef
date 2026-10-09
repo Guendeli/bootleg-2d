@@ -3,6 +3,7 @@
     "rootNamespace": "Bootleg.Tests",
     "references": [
         "Bootleg.Game",
+        "com.crookedhead.tbsf.common",
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner"
     ],

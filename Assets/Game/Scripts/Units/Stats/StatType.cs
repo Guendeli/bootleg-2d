@@ -11,5 +11,7 @@ namespace Bootleg.Units.Stats
         AttackRange,
         Attack,
         Defence,
+        /// <summary>How many cells a push sends the ball.</summary>
+        KickPower,
     }
 }
