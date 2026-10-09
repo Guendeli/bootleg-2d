@@ -50,6 +50,39 @@ namespace Bootleg.Ball
             return targets;
         }
 
+        /// <summary>
+        /// Pass: like a kick, but the ball goes to a receiver. In each orthogonal direction the ball crosses free cells;
+        /// the first taken cell ends the line, and it is a target only if <paramref name="isReceiver"/> accepts it.
+        /// The receiver must be within <c>power</c> cells.
+        /// </summary>
+        /// <returns>Each receiver's cell mapped to the path the ball travels, ending on that cell.</returns>
+        public static Dictionary<ICell, List<ICell>> GetPassTargets(ICell carrierCell, int power, Func<Vector2IntImpl, ICell> cellAt, Func<ICell, bool> isReceiver)
+        {
+            var targets = new Dictionary<ICell, List<ICell>>();
+            foreach (var (dx, dy) in OrthogonalDirections)
+            {
+                var path = new List<ICell>();
+                for (var step = 1; step <= power; step++)
+                {
+                    var cell = cellAt(new Vector2IntImpl(carrierCell.GridCoordinates.x + dx * step, carrierCell.GridCoordinates.y + dy * step));
+                    if (cell == null)
+                    {
+                        break;
+                    }
+                    path.Add(cell);
+                    if (cell.IsTaken)
+                    {
+                        if (isReceiver(cell))
+                        {
+                            targets[cell] = path;
+                        }
+                        break;
+                    }
+                }
+            }
+            return targets;
+        }
+
         private static List<ICell> GetLine(ICell origin, int dx, int dy, int power, Func<Vector2IntImpl, ICell> cellAt)
         {
             var path = new List<ICell>();

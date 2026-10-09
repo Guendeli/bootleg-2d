@@ -12,7 +12,7 @@ namespace Bootleg.UI
 {
     /// <summary>
     /// Minimal action picker shown while a human player's <see cref="TacticsUnit"/> is selected:
-    /// one button per <see cref="TacticsUnit.Actions"/> entry, plus Wait.
+    /// one button per <see cref="TacticsUnit.Actions"/> entry the unit can perform right now, plus Wait.
     /// Builds its own screen-space canvas, so it only needs the grid controller assigned.
     /// The scene needs an EventSystem (BootcampScene has one).
     /// </summary>
@@ -106,17 +106,19 @@ namespace Bootleg.UI
             ClearButtons();
             _shownUnit = unit;
 
+            // Only actions the unit can perform right now; Wait is always available.
+            var activeIndex = unit.ActiveActionIndex;
             for (var i = 0; i < unit.Actions.Count; i++)
             {
                 var index = i;
                 var action = unit.Actions[i];
-                AddButton(
-                    action.Label,
-                    interactable: unit.CanPerform(action, _gridController),
-                    isActive: i == unit.ActiveActionIndex,
-                    onClick: () => unit.SelectAction(index, _gridController));
+                if (!unit.CanPerform(action, _gridController))
+                {
+                    continue;
+                }
+                AddButton(action.Label, isActive: i == activeIndex, onClick: () => unit.SelectAction(index, _gridController));
             }
-            AddButton("Wait", interactable: true, isActive: false, onClick: () => unit.Wait(_gridController));
+            AddButton("Wait", isActive: false, onClick: () => unit.Wait(_gridController));
 
             _panel.gameObject.SetActive(true);
         }
@@ -168,7 +170,7 @@ namespace Bootleg.UI
             fitter.horizontalFit = fitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
         }
 
-        private void AddButton(string label, bool interactable, bool isActive, UnityEngine.Events.UnityAction onClick)
+        private void AddButton(string label, bool isActive, UnityEngine.Events.UnityAction onClick)
         {
             var buttonObject = new GameObject(label, typeof(RectTransform), typeof(Image), typeof(Button), typeof(LayoutElement));
             buttonObject.transform.SetParent(_panel, false);
@@ -182,7 +184,6 @@ namespace Bootleg.UI
 
             var button = buttonObject.GetComponent<Button>();
             button.targetGraphic = image;
-            button.interactable = interactable;
             button.onClick.AddListener(onClick);
 
             var textObject = new GameObject("Label", typeof(RectTransform), typeof(Text));

@@ -96,6 +96,7 @@ GameObject:
   - component: {fileID: -5892823110541515203}
   - component: {fileID: -1712817313211499075}
   - component: {fileID: -3458245089338430578}
+  - component: {fileID: 3742699082277912201}
   m_Layer: 0
   m_Name: Player1 Unit
   m_TagString: Untagged
@@ -176,6 +177,9 @@ MonoBehaviour:
   - Label: Kick
     Abilities:
     - {fileID: -1712817313211499075}
+  - Label: Pass
+    Abilities:
+    - {fileID: 3742699082277912201}
   - Label: Tackle
     Abilities:
     - {fileID: -3458245089338430578}
@@ -257,6 +261,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: Bootleg.Game::Bootleg.Ball.TackleAbility
   _actionCost: 1
   _successChance: 1
+--- !u!114 &3742699082277912201
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 889404546449052493}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ee2dfcff08bf4df4aa8ab5490185e8c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Bootleg.Game::Bootleg.Ball.PassAbility
+  _actionCost: 1
+  _fallbackKickPower: 2
 --- !u!1 &1475985202764374347
 GameObject:
   m_ObjectHideFlags: 0
