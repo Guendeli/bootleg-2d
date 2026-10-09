@@ -1,4 +1,4 @@
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using TurnBasedStrategyFramework.Common.AI.BehaviourTrees;
 using TurnBasedStrategyFramework.Common.Controllers;
 using TurnBasedStrategyFramework.Common.Units;
@@ -29,9 +29,9 @@ namespace TurnBasedStrategyFramework.Unity.Examples.Legacy.Example4.AI.Behaviour
             _gridController = gridController;
         }
 
-        public Task<bool> Execute(bool debugMode)
+        public UniTask<bool> Execute(bool debugMode)
         {
-            var tcs = new TaskCompletionSource<bool>();
+            var tcs = new UniTaskCompletionSource<bool>();
 
             var unitColor = (_unit as IColoredUnit).Color;
             _unit.AIExecuteAbility(new SpawnCommand(_unitPrefab, _unit.CurrentCell, unitColor, _economyController, _unitCost), _gridController, tcs);

@@ -1,5 +1,5 @@
 using System;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using TurnBasedStrategyFramework.Common.Cells;
 using TurnBasedStrategyFramework.Common.Controllers;
 
@@ -141,12 +141,12 @@ namespace TurnBasedStrategyFramework.Common.Units.Abilities
         /// <summary>
         /// The action to perform before the command is executed.
         /// </summary>
-        public readonly Func<IGridController, Task> PreAction;
+        public readonly Func<IGridController, UniTask> PreAction;
 
         /// <summary>
         /// The action to perform after the command is executed.
         /// </summary>
-        public readonly Func<IGridController, Task> PostAction;
+        public readonly Func<IGridController, UniTask> PostAction;
 
         /// <summary>
         /// Indicates whether the action was triggered by a remote player.
@@ -160,7 +160,7 @@ namespace TurnBasedStrategyFramework.Common.Units.Abilities
         /// <param name="preAction">The action to perform before the command is executed.</param>
         /// <param name="postAction">The action to perform after the command is executed.</param>
         /// <param name="isNetworkInvoked">Indicates whether the action was triggered by a remote player.
-        public AbilityUsedEventArgs(IUnit unit, ICommand command, Func<IGridController, Task> preAction, Func<IGridController, Task> postAction, bool isNetworkInvoked = false)
+        public AbilityUsedEventArgs(IUnit unit, ICommand command, Func<IGridController, UniTask> preAction, Func<IGridController, UniTask> postAction, bool isNetworkInvoked = false)
         {
             Unit = unit;
             Command = command;

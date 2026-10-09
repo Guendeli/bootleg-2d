@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using TurnBasedStrategyFramework.Common.AI.BehaviourTrees;
 using TurnBasedStrategyFramework.Common.Cells;
 using TurnBasedStrategyFramework.Common.Controllers;
@@ -160,7 +160,7 @@ namespace TurnBasedStrategyFramework.Unity.Units
         /// it can be overridden by inheriting classes if a different marking system is preferred.
         /// </remarks>
         /// <returns>A task representing the asynchronous operation.</returns>
-        public virtual async Task UnMark()
+        public virtual async UniTask UnMark()
         {
             foreach (var fn in _unMarkFn)
             {
@@ -176,7 +176,7 @@ namespace TurnBasedStrategyFramework.Unity.Units
         /// it can be overridden by inheriting classes if a different marking system is preferred.
         /// </remarks>
         /// <returns>A task representing the asynchronous operation.</returns>
-        public virtual async Task MarkAsSelected()
+        public virtual async UniTask MarkAsSelected()
         {
             foreach (var fn in _markAsSelectedFn)
             {
@@ -192,7 +192,7 @@ namespace TurnBasedStrategyFramework.Unity.Units
         /// it can be overridden by inheriting classes if a different marking system is preferred.
         /// </remarks>
         /// <returns>A task representing the asynchronous operation.</returns>
-        public virtual async Task MarkAsFriendly()
+        public virtual async UniTask MarkAsFriendly()
         {
             foreach (var fn in _markAsFriendlyFn)
             {
@@ -208,7 +208,7 @@ namespace TurnBasedStrategyFramework.Unity.Units
         /// it can be overridden by inheriting classes if a different marking system is preferred.
         /// </remarks>
         /// <returns>A task representing the asynchronous operation.</returns>
-        public virtual async Task MarkAsFinished()
+        public virtual async UniTask MarkAsFinished()
         {
             foreach (var fn in _markAsFinishedFn)
             {
@@ -224,7 +224,7 @@ namespace TurnBasedStrategyFramework.Unity.Units
         /// it can be overridden by inheriting classes if a different marking system is preferred.
         /// </remarks>
         /// <returns>A task representing the asynchronous operation.</returns>
-        public virtual async Task MarkAsTargetable()
+        public virtual async UniTask MarkAsTargetable()
         {
             foreach (var fn in _markAsTargetable)
             {
@@ -241,7 +241,7 @@ namespace TurnBasedStrategyFramework.Unity.Units
         /// </remarks>
         /// <param name="otherUnit">The unit being attacked.</param>
         /// <returns>A task representing the asynchronous operation.</returns>
-        public virtual async Task MarkAsAttacking(Unit otherUnit)
+        public virtual async UniTask MarkAsAttacking(Unit otherUnit)
         {
             foreach (var fn in _markAsAttackingFn)
             {
@@ -258,7 +258,7 @@ namespace TurnBasedStrategyFramework.Unity.Units
         /// </remarks>
         /// <param name="otherUnit">The unit attacking this unit.</param>
         /// <returns>A task representing the asynchronous operation.</returns>
-        public virtual async Task MarkAsDefending(Unit otherUnit)
+        public virtual async UniTask MarkAsDefending(Unit otherUnit)
         {
             foreach (var fn in _markAsDefendingFn)
             {
@@ -282,7 +282,7 @@ namespace TurnBasedStrategyFramework.Unity.Units
         /// <param name="destination">The destination cell of the movement.</param>
         /// <param name="path">The sequence of cells representing the movement path.</param>
         /// <returns>A task representing the asynchronous operation.</returns>
-        public virtual async Task MarkAsMoving(ICell source, ICell destination, IEnumerable<ICell> path)
+        public virtual async UniTask MarkAsMoving(ICell source, ICell destination, IEnumerable<ICell> path)
         {
             foreach (var fn in _markAsMoving)
             {
@@ -302,7 +302,7 @@ namespace TurnBasedStrategyFramework.Unity.Units
         /// <param name="destination">The destination cell of the previously marked movement.</param>
         /// <param name="path">The sequence of cells that represented the movement path.</param>
         /// <returns>A task representing the asynchronous operation.</returns>
-        public virtual async Task UnMarkAsMoving(ICell source, ICell destination, IEnumerable<ICell> path)
+        public virtual async UniTask UnMarkAsMoving(ICell source, ICell destination, IEnumerable<ICell> path)
         {
             foreach (var fn in _unMarkAsMoving)
             {
@@ -319,7 +319,7 @@ namespace TurnBasedStrategyFramework.Unity.Units
         /// it can be overridden by inheriting classes if a different marking system is preferred.
         /// </remarks>
         /// <returns>A task representing the asynchronous operation.</returns>
-        public virtual async Task MarkAsDestroyed()
+        public virtual async UniTask MarkAsDestroyed()
         {
             foreach (var fn in _markAsDestroyedFn)
             {
@@ -363,7 +363,7 @@ namespace TurnBasedStrategyFramework.Unity.Units
         {
             _moveComponent.InvalidateCache();
         }
-        public virtual Task MovementAnimation(IEnumerable<ICell> path, ICell destination)
+        public virtual UniTask MovementAnimation(IEnumerable<ICell> path, ICell destination)
         {
             return _moveComponent.MovementAnimation(path, destination);
         }
@@ -491,23 +491,23 @@ namespace TurnBasedStrategyFramework.Unity.Units
             InvokeDestroyed(new UnitDestroyedEventArgs(this, null));
         }
 
-        public Task ExecuteAbility(ICommand command, Func<IGridController, Task> preAction, Func<IGridController, Task> postAction, bool isNetworkInvoked = false)
+        public UniTask ExecuteAbility(ICommand command, Func<IGridController, UniTask> preAction, Func<IGridController, UniTask> postAction, bool isNetworkInvoked = false)
         {
             return UnitHelper.ExecuteAbility(this, command, preAction, postAction, isNetworkInvoked);
         }
-        public Task HumanExecuteAbility(ICommand command, IGridController gridController, bool isNetworkInvoked = false)
+        public UniTask HumanExecuteAbility(ICommand command, IGridController gridController, bool isNetworkInvoked = false)
         {
             return UnitHelper.HumanExecuteAbility(this, command, gridController, isNetworkInvoked);
         }
-        public Task HumanExecuteAbility(ICommand command, IGridController gridController, Func<IGridController, Task> preAction, Func<IGridController, Task> postAction, bool isNetworkInvoked = false)
+        public UniTask HumanExecuteAbility(ICommand command, IGridController gridController, Func<IGridController, UniTask> preAction, Func<IGridController, UniTask> postAction, bool isNetworkInvoked = false)
         {
             return UnitHelper.HumanExecuteAbility(this, command, gridController, preAction, postAction, isNetworkInvoked);
         }
-        public Task AIExecuteAbility(ICommand command, IGridController gridController, TaskCompletionSource<bool> tcs, bool isNetworkInvoked = false)
+        public UniTask AIExecuteAbility(ICommand command, IGridController gridController, UniTaskCompletionSource<bool> tcs, bool isNetworkInvoked = false)
         {
             return UnitHelper.AIExecuteAbility(this, command, gridController, tcs, isNetworkInvoked);
         }
-        public Task AIExecuteAbility(ICommand command, IGridController gridController, TaskCompletionSource<bool> tcs, Func<IGridController, Task> preAction, Func<IGridController, Task> postAction, bool isNetworkInvoked = false)
+        public UniTask AIExecuteAbility(ICommand command, IGridController gridController, UniTaskCompletionSource<bool> tcs, Func<IGridController, UniTask> preAction, Func<IGridController, UniTask> postAction, bool isNetworkInvoked = false)
         {
             return UnitHelper.AIExecuteAbility(this, command, gridController, tcs, preAction, postAction, isNetworkInvoked);
         }

@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using TurnBasedStrategyFramework.Common.AI.Evaluators;
 using TurnBasedStrategyFramework.Common.Controllers;
 using TurnBasedStrategyFramework.Common.Units;
@@ -44,7 +44,7 @@ namespace TurnBasedStrategyFramework.Common.AI.BehaviourTrees
         /// Executes the attack sequence by first checking for enemies in range and then initiating an attack if possible.
         /// </summary>
         /// <returns>A task representing the execution, with a boolean result indicating success.</returns>
-        public Task<bool> Execute(bool debugMode)
+        public UniTask<bool> Execute(bool debugMode)
         {
             return new SequenceNode(new List<ITreeNode>
             {

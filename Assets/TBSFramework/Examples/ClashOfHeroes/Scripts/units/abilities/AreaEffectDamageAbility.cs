@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using TurnBasedStrategyFramework.Common.Cells;
 using TurnBasedStrategyFramework.Common.Controllers;
 using TurnBasedStrategyFramework.Common.Units;
@@ -42,12 +42,8 @@ namespace TurnBasedStrategyFramework.Unity.Examples.ClashOfHeroes.Units.Abilitie
                         () => gridController.UnitManager.MarkAsAttacking(UnitReference, _unitsInRange.FirstOrDefault()),
                         (u) =>
                         {
-                            var tcs = new TaskCompletionSource<Task>();
-                            gridController.UnitManager.MarkAsDefending(u, UnitReference);
-
-                            tcs.SetResult(Task.CompletedTask);
-
-                            return tcs.Task;
+                            gridController.UnitManager.MarkAsDefending(u, UnitReference).Forget();
+                            return UniTask.CompletedTask;
                         }
                     ),
                     gridController

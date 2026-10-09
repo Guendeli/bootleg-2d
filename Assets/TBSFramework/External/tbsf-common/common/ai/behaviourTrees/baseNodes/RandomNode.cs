@@ -1,5 +1,5 @@
 using System;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 
 namespace TurnBasedStrategyFramework.Common.AI.BehaviourTrees
 {
@@ -49,9 +49,9 @@ namespace TurnBasedStrategyFramework.Common.AI.BehaviourTrees
         /// <returns>
         /// A task representing the execution of the node. The task result is <c>true</c> if the generated random value is greater than or equal to <c>successProbability</c>, otherwise <c>false</c>.
         /// </returns>
-        public Task<bool> Execute(bool debugMode)
+        public UniTask<bool> Execute(bool debugMode)
         {
-            return Task.FromResult(_rng() < _successProbability);
+            return UniTask.FromResult(_rng() < _successProbability);
         }
     }
 }

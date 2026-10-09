@@ -1,4 +1,4 @@
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace TurnBasedStrategyFramework.Unity.Highlighters
@@ -16,10 +16,10 @@ namespace TurnBasedStrategyFramework.Unity.Highlighters
             _color = color;
         }
 
-        public override Task Apply(IHighlightParams @params)
+        public override UniTask Apply(IHighlightParams @params)
         {
             _sprite.color = _color;
-            return Task.CompletedTask;
+            return UniTask.CompletedTask;
         }
     }
 }

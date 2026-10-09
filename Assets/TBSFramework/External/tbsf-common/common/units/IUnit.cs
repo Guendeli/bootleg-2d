@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using TurnBasedStrategyFramework.Common.AI.BehaviourTrees;
 using TurnBasedStrategyFramework.Common.Cells;
 using TurnBasedStrategyFramework.Common.Controllers;
@@ -133,7 +133,7 @@ namespace TurnBasedStrategyFramework.Common.Units
         /// <param name="preAction">An action to perform before executing the ability.</param>
         /// <param name="postAction">An action to perform after executing the ability.</param>
         /// <param name="isNetworkInvoked">Indicates whether the action was triggered by a remote player. 
-        Task ExecuteAbility(ICommand command, Func<IGridController, Task> preAction, Func<IGridController, Task> postAction, bool isNetworkInvoked = false);
+        UniTask ExecuteAbility(ICommand command, Func<IGridController, UniTask> preAction, Func<IGridController, UniTask> postAction, bool isNetworkInvoked = false);
 
         /// <summary>
         /// Helper method to execute an ability as a human-controlled unit with default pre-action and post-action steps.
@@ -141,8 +141,8 @@ namespace TurnBasedStrategyFramework.Common.Units
         /// <param name="command">The command representing the ability to execute.</param>
         /// <param name="gridController">The grid controller.</param>
         /// <param name="isNetworkInvoked">Indicates whether the action was triggered by a remote player. 
-        Task HumanExecuteAbility(ICommand command, IGridController gridController, bool isNetworkInvoked = false);
-        Task HumanExecuteAbility(ICommand command, IGridController gridController, Func<IGridController, Task> preAction, Func<IGridController, Task> postAction, bool isNetworkInvoked = false);
+        UniTask HumanExecuteAbility(ICommand command, IGridController gridController, bool isNetworkInvoked = false);
+        UniTask HumanExecuteAbility(ICommand command, IGridController gridController, Func<IGridController, UniTask> preAction, Func<IGridController, UniTask> postAction, bool isNetworkInvoked = false);
 
         /// <summary>
         /// Helper method to execute an ability as an AI-controlled unit with default pre-action and post-action steps.
@@ -151,8 +151,8 @@ namespace TurnBasedStrategyFramework.Common.Units
         /// <param name="gridController">The grid controller.</param>
         /// <param name="tcs">A task completion source to signal when execution is complete.</param>
         /// <param name="isNetworkInvoked">Indicates whether the action was triggered by a remote player. 
-        Task AIExecuteAbility(ICommand command, IGridController gridController, TaskCompletionSource<bool> tcs, bool isNetworkInvoked = false);
-        Task AIExecuteAbility(ICommand command, IGridController gridController, TaskCompletionSource<bool> tcs, Func<IGridController, Task> preAction, Func<IGridController, Task> postAction, bool isNetworkInvoked = false);
+        UniTask AIExecuteAbility(ICommand command, IGridController gridController, UniTaskCompletionSource<bool> tcs, bool isNetworkInvoked = false);
+        UniTask AIExecuteAbility(ICommand command, IGridController gridController, UniTaskCompletionSource<bool> tcs, Func<IGridController, UniTask> preAction, Func<IGridController, UniTask> postAction, bool isNetworkInvoked = false);
 
         /// <summary>
         /// Called at the start of the unit's turn.

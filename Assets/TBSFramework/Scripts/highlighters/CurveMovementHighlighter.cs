@@ -1,4 +1,4 @@
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using TurnBasedStrategyFramework.Unity.Units;
 using TurnBasedStrategyFramework.Unity.Utilities;
 using UnityEngine;
@@ -16,7 +16,7 @@ namespace TurnBasedStrategyFramework.Unity.Highlighters
         [SerializeField] private AnimationCurve _horizontalCurve;
         [SerializeField] private AnimationCurve _verticalCurve;
 
-        public override async Task Apply(IHighlightParams @params)
+        public override async UniTask Apply(IHighlightParams @params)
         {
             var moveHighlightParams = (MoveHighlightParams)@params;
 
@@ -39,7 +39,7 @@ namespace TurnBasedStrategyFramework.Unity.Highlighters
 
                 _targetTransform.position = horizontalPosition;
 
-                await Awaitable.NextFrameAsync();
+                await UniTask.NextFrame();
             }
 
             _targetTransform.position = endPos;

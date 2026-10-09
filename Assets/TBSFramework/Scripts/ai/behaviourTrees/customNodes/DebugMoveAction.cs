@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using TurnBasedStrategyFramework.Common.AI.BehaviourTrees;
 using TurnBasedStrategyFramework.Common.AI.Evaluators;
 using TurnBasedStrategyFramework.Common.Cells;
@@ -45,7 +45,7 @@ namespace TurnBasedStrategyFramework.Unity.AI.BehaviourTrees
             _debugGradient.SetKeys(colorKeys, new GradientAlphaKey[0]);
         }
 
-        public async Task<bool> Execute(bool debugMode)
+        public async UniTask<bool> Execute(bool debugMode)
         {
             if (!debugMode)
             {
@@ -108,7 +108,7 @@ namespace TurnBasedStrategyFramework.Unity.AI.BehaviourTrees
             Debug.Log($"Click on any cell to check its score. Press {Key.Q} to continue.");
             while (!Keyboard.current.qKey.wasPressedThisFrame)
             {
-                await Awaitable.NextFrameAsync();
+                await UniTask.NextFrame();
             }
 
             foreach (var cell in _gridController.CellManager.GetCells())
@@ -122,9 +122,10 @@ namespace TurnBasedStrategyFramework.Unity.AI.BehaviourTrees
                 unit.UnitClicked -= OnUnitClicked;
             }
 
-            _ = _gridController.CellManager
+            _gridController.CellManager
                 .UnMark(_gridController.CellManager.GetCells()
-                .Where(c => _unit.IsCellMovableTo(c) || c.Equals(_unit.CurrentCell)));
+                .Where(c => _unit.IsCellMovableTo(c) || c.Equals(_unit.CurrentCell)))
+                .Forget();
 
             return true;
         }

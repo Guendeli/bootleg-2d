@@ -1,4 +1,4 @@
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using TurnBasedStrategyFramework.Common.AI.BehaviourTrees;
 using UnityEngine;
 
@@ -20,7 +20,7 @@ namespace TurnBasedStrategyFramework.Unity.Examples.Legacy.Example4.AI.Behaviour
             _playerNumber = playerNumber;
         }
 
-        public Task<bool> Execute(bool debugMode)
+        public UniTask<bool> Execute(bool debugMode)
         {
             var playerFunds = _economyController.GetValue(_playerNumber);
             var result = playerFunds >= _cost;
@@ -30,7 +30,7 @@ namespace TurnBasedStrategyFramework.Unity.Examples.Legacy.Example4.AI.Behaviour
                 Debug.Log($"CostCheck result: {result}; Player Funds: {playerFunds}; Cost: {_cost}");
             }
 
-            return Task.FromResult(result);
+            return UniTask.FromResult(result);
         }
     }
 }

@@ -1,5 +1,5 @@
 using System;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 
 namespace TurnBasedStrategyFramework.Common.AI.BehaviourTrees
 {
@@ -33,10 +33,10 @@ namespace TurnBasedStrategyFramework.Common.AI.BehaviourTrees
         /// Always returns true after the action is invoked.
         /// </summary>
         /// <returns>A task representing the execution, with a boolean result indicating success.</returns>
-        public Task<bool> Execute(bool debugMode)
+        public UniTask<bool> Execute(bool debugMode)
         {
             _action.Invoke();
-            return Task.FromResult(_returnValue);
+            return UniTask.FromResult(_returnValue);
         }
     }
 }

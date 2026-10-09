@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace TurnBasedStrategyFramework.Unity.Highlighters
@@ -12,13 +12,13 @@ namespace TurnBasedStrategyFramework.Unity.Highlighters
         [SerializeField] private bool _activationStatus;
         [SerializeField] private List<GameObject> _targets;
 
-        public override Task Apply(IHighlightParams @params)
+        public override UniTask Apply(IHighlightParams @params)
         {
             foreach (var target in _targets)
             {
                 target.SetActive(_activationStatus);
             }
-            return Task.CompletedTask;
+            return UniTask.CompletedTask;
         }
     }
 }

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using TurnBasedStrategyFramework.Common.Controllers;
 using TurnBasedStrategyFramework.Common.Network;
 using TurnBasedStrategyFramework.Common.Units;
@@ -60,7 +60,7 @@ namespace TurnBasedStrategyFramework.Unity.Network
         public virtual bool IsHost { get; protected set; }
 
         protected Dictionary<long, Action<Dictionary<string, object>>> Handlers = new Dictionary<long, Action<Dictionary<string, object>>>();
-        protected Queue<Func<Task>> EventQueue = new Queue<Func<Task>>();
+        protected Queue<Func<UniTask>> EventQueue = new Queue<Func<UniTask>>();
         protected bool processingEvents;
 
         /// <summary>
@@ -107,7 +107,7 @@ namespace TurnBasedStrategyFramework.Unity.Network
         /// Get a list of available public rooms.
         /// </summary>
         /// <returns>A task that represents the asynchronous operation. The task result contains a collection of RoomData.</returns>
-        public abstract Task<IEnumerable<RoomData>> GetRoomList();
+        public abstract UniTask<IEnumerable<RoomData>> GetRoomList();
 
         /// <summary>
         /// Send the current match state to other players in the room.
@@ -243,11 +243,11 @@ namespace TurnBasedStrategyFramework.Unity.Network
                 var command = Activator.CreateInstance(commandType) as ICommand;
                 var initializedCommand = command.Deserialize(actionParams, _gridController);
 
-                EventQueue.Enqueue(() => unit.ExecuteAbility(initializedCommand, (gC) => Task.CompletedTask, (gC) => Task.CompletedTask, true));
+                EventQueue.Enqueue(() => unit.ExecuteAbility(initializedCommand, (gC) => UniTask.CompletedTask, (gC) => UniTask.CompletedTask, true));
             }
             if (!processingEvents)
             {
-                _ = ProcessEvents();
+                ProcessEvents().Forget();
             }
         }
         private void HandleRemoteTurnEnding(Dictionary<string, object> actionParams)
@@ -255,17 +255,17 @@ namespace TurnBasedStrategyFramework.Unity.Network
             EventQueue.Enqueue(() => EndTurn(true));
             if (!processingEvents)
             {
-                _ = ProcessEvents();
+                ProcessEvents().Forget();
             }
         }
 
-        protected Task EndTurn(bool isNetworkInvoked)
+        protected UniTask EndTurn(bool isNetworkInvoked)
         {
             _gridController.EndTurn(true);
-            return Task.CompletedTask;
+            return UniTask.CompletedTask;
         }
 
-        protected virtual async Task ProcessEvents()
+        protected virtual async UniTask ProcessEvents()
         {
             processingEvents = true;
             while (EventQueue.Count > 0)

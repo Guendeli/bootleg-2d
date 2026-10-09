@@ -1,4 +1,4 @@
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using TurnBasedStrategyFramework.Unity.Units;
 
 namespace TurnBasedStrategyFramework.Unity.Examples.ClashOfHeroes.Units
@@ -8,6 +8,6 @@ namespace TurnBasedStrategyFramework.Unity.Examples.ClashOfHeroes.Units
     /// </summary>
     public interface IRelocateHighlighter
     {
-        Task ApplyRelocateEffect(MoveHighlightParams @params);
+        UniTask ApplyRelocateEffect(MoveHighlightParams @params);
     }
 }

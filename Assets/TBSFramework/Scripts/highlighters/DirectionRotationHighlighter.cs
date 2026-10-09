@@ -1,4 +1,4 @@
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace TurnBasedStrategyFramework.Unity.Highlighters
@@ -10,11 +10,11 @@ namespace TurnBasedStrategyFramework.Unity.Highlighters
     {
         [SerializeField] private CardinalDirectionHelper.CardinalDirection _targetDirection;
 
-        public override async Task Apply(IHighlightParams @params)
+        public override async UniTask Apply(IHighlightParams @params)
         {
             Vector3 directionToFace = CardinalDirectionHelper.GetDirectionVector(_targetDirection);
             await RotateTowards(directionToFace);
-            await Awaitable.WaitForSecondsAsync(_delay / 1000f);
+            await UniTask.Delay(_delay);
         }
     }
 }

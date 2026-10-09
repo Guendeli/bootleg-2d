@@ -1,4 +1,4 @@
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace TurnBasedStrategyFramework.Unity.Highlighters
@@ -14,10 +14,10 @@ namespace TurnBasedStrategyFramework.Unity.Highlighters
         /// </summary>
         [SerializeField] private string _message;
 
-        public override Task Apply(IHighlightParams args)
+        public override UniTask Apply(IHighlightParams args)
         {
             Debug.Log(_message);
-            return Task.CompletedTask;
+            return UniTask.CompletedTask;
         }
     }
 }

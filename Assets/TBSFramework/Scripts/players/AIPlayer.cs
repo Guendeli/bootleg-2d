@@ -1,6 +1,6 @@
 using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using TurnBasedStrategyFramework.Common.AI;
 using TurnBasedStrategyFramework.Common.Controllers;
 using TurnBasedStrategyFramework.Common.Controllers.GameResolvers;
@@ -75,7 +75,7 @@ namespace TurnBasedStrategyFramework.Unity.Players
         /// <param name="gridController">The grid controller.</param>
         public override async void Play(GridController gridController)
         {
-            await Awaitable.WaitForSecondsAsync(_turnStartDelay / 1000f);
+            await UniTask.Delay(_turnStartDelay);
             _cancellationTokenSource.Dispose();
             _cancellationTokenSource = new CancellationTokenSource();
 
@@ -96,7 +96,7 @@ namespace TurnBasedStrategyFramework.Unity.Players
                     await WaitForKeypress(Key.N);
                 }
 
-                await Awaitable.WaitForSecondsAsync(_unitDelay / 1000f, _cancellationTokenSource.Token);
+                await UniTask.Delay(_unitDelay, cancellationToken: _cancellationTokenSource.Token);
                 await playableUnit.BehaviourTree.Execute(_debugMode);
 
                 await gridController.UnitManager.MarkAsFriendly(new IUnit[] { playableUnit });
@@ -112,12 +112,12 @@ namespace TurnBasedStrategyFramework.Unity.Players
         /// </summary>
         /// <param name="key">The key to wait for.</param>
         /// <returns>A task representing the wait operation.</returns>
-        private async Task WaitForKeypress(Key key)
+        private async UniTask WaitForKeypress(Key key)
         {
             KeyControl keyControl = Keyboard.current[key];
             while (!keyControl.wasPressedThisFrame)
             {
-                await Awaitable.NextFrameAsync();
+                await UniTask.NextFrame();
             }
         }
 

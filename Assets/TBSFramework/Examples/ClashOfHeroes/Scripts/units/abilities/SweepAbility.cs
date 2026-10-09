@@ -8,6 +8,7 @@ using TurnBasedStrategyFramework.Common.Units;
 using TurnBasedStrategyFramework.Common.Units.Abilities;
 using TurnBasedStrategyFramework.Unity.Units;
 using UnityEngine;
+using Cysharp.Threading.Tasks;
 
 namespace TurnBasedStrategyFramework.Unity.Examples.ClashOfHeroes.Units.Abilities
 {
@@ -53,14 +54,14 @@ namespace TurnBasedStrategyFramework.Unity.Examples.ClashOfHeroes.Units.Abilitie
                         _unitsOrdered,
                         _damage,
                         0,
-                        async () => await (UnitReference as Unit)?.GetComponent<ISweepHighlighter>()?.ApplySweepEffect(
+                        async () => await ((UnitReference as Unit)?.GetComponent<ISweepHighlighter>()?.ApplySweepEffect(
                             (UnitReference as Unit).gameObject,
                             new CombatHighlightParams(UnitReference as Unit, unit as Unit)
-                        ),
+                        ) ?? UniTask.CompletedTask),
                         async (u) =>
                         {
-                            _ = gridController.UnitManager.MarkAsDefending(u, UnitReference);
-                            await Awaitable.WaitForSecondsAsync(50f / 1000f);
+                            gridController.UnitManager.MarkAsDefending(u, UnitReference).Forget();
+                            await UniTask.Delay(50);
                         }
                     ),
                     gridController

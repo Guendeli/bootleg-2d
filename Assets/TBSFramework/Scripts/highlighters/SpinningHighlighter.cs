@@ -1,4 +1,4 @@
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace TurnBasedStrategyFramework.Unity.Highlighters
@@ -17,7 +17,7 @@ namespace TurnBasedStrategyFramework.Unity.Highlighters
         /// <summary>
         /// Applies the rotation animation to the target Transform based on the animation curve.
         /// </summary>
-        public override async Task Apply(IHighlightParams @params)
+        public override async UniTask Apply(IHighlightParams @params)
         {
             float elapsedTime = 0f;
             while (elapsedTime < _duration)
@@ -28,7 +28,7 @@ namespace TurnBasedStrategyFramework.Unity.Highlighters
 
                 _targetTransform.Rotate(_rotationAxis, _speedMultiplier * _rotationSpeed * Time.deltaTime, Space.Self);
 
-                await Awaitable.NextFrameAsync();
+                await UniTask.NextFrame();
             }
         }
     }

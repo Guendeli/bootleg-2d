@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using TurnBasedStrategyFramework.Common.Cells;
 using TurnBasedStrategyFramework.Common.Controllers;
 using TurnBasedStrategyFramework.Common.Units;
@@ -60,7 +60,7 @@ namespace TurnBasedStrategyFramework.Unity.Examples.ClashOfHeroes.Units
             return agressorCellHeight > defenderCellHeight ? (damageDealt * 2) - DefenceFactor : base.CalculateDamageTaken(aggressor, damageDealt, aggressorCell, defenderCell);
         }
 
-        public override async Task MovementAnimation(IEnumerable<ICell> path, ICell destination)
+        public override async UniTask MovementAnimation(IEnumerable<ICell> path, ICell destination)
         {
             var currentCell = CurrentCell;
             foreach (var cell in path)
@@ -86,7 +86,7 @@ namespace TurnBasedStrategyFramework.Unity.Examples.ClashOfHeroes.Units
                         ); ;
                     }
 
-                    await Awaitable.NextFrameAsync();
+                    await UniTask.NextFrame();
                 }
                 InvokeUnitEnteredCell(new UnitChangedGridPositionEventArgs(this, currentCell, cell));
             }

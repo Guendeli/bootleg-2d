@@ -1,4 +1,4 @@
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using TurnBasedStrategyFramework.Common.Units;
 
 namespace TurnBasedStrategyFramework.Common.AI.BehaviourTrees
@@ -33,9 +33,9 @@ namespace TurnBasedStrategyFramework.Common.AI.BehaviourTrees
         /// Executes the health threshold node by checking if the unit's current health is above the specified threshold.
         /// </summary>
         /// <returns>A task representing the execution, with a boolean result indicating whether the unit's health meets or exceeds the threshold.</returns>
-        public readonly Task<bool> Execute(bool debugMode)
+        public readonly UniTask<bool> Execute(bool debugMode)
         {
-            return Task.FromResult(_unit.Health / _unit.MaxHealth >= _threshold);
+            return UniTask.FromResult(_unit.Health / _unit.MaxHealth >= _threshold);
         }
     }
 }

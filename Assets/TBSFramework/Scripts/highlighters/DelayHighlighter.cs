@@ -1,4 +1,4 @@
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace TurnBasedStrategyFramework.Unity.Highlighters
@@ -12,9 +12,9 @@ namespace TurnBasedStrategyFramework.Unity.Highlighters
         /// Delay to apply in milliseconds.
         /// </summary>
         [SerializeField] private int _delay;
-        public async override Task Apply(IHighlightParams @params)
+        public async override UniTask Apply(IHighlightParams @params)
         {
-            await Awaitable.WaitForSecondsAsync(_delay / 1000f);
+            await UniTask.Delay(_delay);
         }
     }
 }

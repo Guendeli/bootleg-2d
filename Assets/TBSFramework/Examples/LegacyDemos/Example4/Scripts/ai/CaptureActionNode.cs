@@ -1,5 +1,5 @@
 using System.Linq;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using TurnBasedStrategyFramework.Common.AI.BehaviourTrees;
 using TurnBasedStrategyFramework.Common.Controllers;
 using TurnBasedStrategyFramework.Common.Units;
@@ -26,11 +26,11 @@ namespace TurnBasedStrategyFramework.Unity.Examples.Legacy.Example4.AI.Behaviour
             _gridController = gridController;
         }
 
-        public Task<bool> Execute(bool debugMode)
+        public UniTask<bool> Execute(bool debugMode)
         {
             if (_unit.ActionPoints <= 0)
             {
-                return Task.FromResult(false);
+                return UniTask.FromResult(false);
             }
 
             var structureUnitType = _structureUnitType;
@@ -41,7 +41,7 @@ namespace TurnBasedStrategyFramework.Unity.Examples.Legacy.Example4.AI.Behaviour
 
             if (_structure != null && _structure.TryGetComponent<ICapturable>(out var capturable))
             {
-                var tcs = new TaskCompletionSource<bool>();
+                var tcs = new UniTaskCompletionSource<bool>();
                 int loyaltyDelta = -Mathf.CeilToInt(unit.Health * 10f / unit.MaxHealth);
 
                 unit.AIExecuteAbility(
@@ -53,7 +53,7 @@ namespace TurnBasedStrategyFramework.Unity.Examples.Legacy.Example4.AI.Behaviour
                 return tcs.Task;
             }
 
-            return Task.FromResult(false);
+            return UniTask.FromResult(false);
         }
 
     }

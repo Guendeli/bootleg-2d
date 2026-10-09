@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using TurnBasedStrategyFramework.Common.Cells;
 using TurnBasedStrategyFramework.Common.Controllers;
 using TurnBasedStrategyFramework.Common.Players;
@@ -80,35 +80,35 @@ namespace TurnBasedStrategyFramework.Common.Units
         /// </summary>
         /// <param name="units">The units to unmark.</param>
         /// <returns>A task representing the asynchronous unmarking operation.</returns>
-        Task UnMark(IEnumerable<IUnit> units);
+        UniTask UnMark(IEnumerable<IUnit> units);
 
         /// <summary>
         /// Marks the specified unit as selected.
         /// </summary>
         /// <param name="units">The unit to be marked as selected.</param>
         /// <returns>A task representing the asynchronous marking operation.</returns>
-        Task MarkAsSelected(IUnit unit);
+        UniTask MarkAsSelected(IUnit unit);
 
         /// <summary>
         /// Marks the specified units as friendly.
         /// </summary>
         /// <param name="units">The units to be marked as friendly.</param>
         /// <returns>A task representing the asynchronous marking operation.</returns>
-        Task MarkAsFriendly(IEnumerable<IUnit> units);
+        UniTask MarkAsFriendly(IEnumerable<IUnit> units);
 
         /// <summary>
         /// Marks the specified units as finished, indicating that they have completed their actions for the turn.
         /// </summary>
         /// <param name="units">The units to be marked as finished.</param>
         /// <returns>A task representing the asynchronous marking operation.</returns>
-        Task MarkAsFinished(IEnumerable<IUnit> units);
+        UniTask MarkAsFinished(IEnumerable<IUnit> units);
 
         /// <summary>
         /// Marks the specified units as targetable, indicating that they can be targeted for actions such as attacks.
         /// </summary>
         /// <param name="units">The units to be marked as targetable.</param>
         /// <returns>A task representing the asynchronous marking operation.</returns>
-        Task MarkAsTargetable(IEnumerable<IUnit> units);
+        UniTask MarkAsTargetable(IEnumerable<IUnit> units);
 
         /// <summary>
         /// Marks the specified unit as attacking.
@@ -116,7 +116,7 @@ namespace TurnBasedStrategyFramework.Common.Units
         /// <param name="units">The unit initiating the attack.</param>
         /// <param name="target">The unit being attacked.</param>
         /// <returns>A task representing the asynchronous marking operation.</returns>
-        Task MarkAsAttacking(IUnit unit, IUnit target);
+        UniTask MarkAsAttacking(IUnit unit, IUnit target);
 
         /// <summary>
         /// Marks the specified units as defending.
@@ -124,7 +124,7 @@ namespace TurnBasedStrategyFramework.Common.Units
         /// <param name="units">The unit being attacked</param>
         /// <param name="target">The unit initiating the attack</param>
         /// <returns>A task representing the asynchronous marking operation.</returns>
-        Task MarkAsDefending(IUnit unit, IUnit aggressor);
+        UniTask MarkAsDefending(IUnit unit, IUnit aggressor);
 
         /// <summary>
         /// Marks the specified units as moving.
@@ -134,7 +134,7 @@ namespace TurnBasedStrategyFramework.Common.Units
         /// <param name="destination">The destination cell of the movement.</param>
         /// <param name="path">The sequence of cells representing the movement path.</param>
         /// <returns>A task representing the asynchronous marking operation.</returns>
-        Task MarkAsMoving(IUnit unit, ICell source, ICell destination, IEnumerable<ICell> path);
+        UniTask MarkAsMoving(IUnit unit, ICell source, ICell destination, IEnumerable<ICell> path);
 
         /// <summary>
         /// Removes the movement highlight from specific units.
@@ -144,13 +144,13 @@ namespace TurnBasedStrategyFramework.Common.Units
         /// <param name="destination">The destination cell of the movement.</param>
         /// <param name="path">The sequence of cells representing the movement path.</param>
         /// <returns>A task representing the asynchronous marking operation.</returns>
-        Task UnMarkAsMoving(IUnit unit, ICell source, ICell destination, IEnumerable<ICell> path);
+        UniTask UnMarkAsMoving(IUnit unit, ICell source, ICell destination, IEnumerable<ICell> path);
 
         /// <summary>
         /// Marks the specified units as destroyed.
         /// </summary>
         /// <param name="units">The unit being destroyed</param>
         /// <returns>A task representing the asynchronous marking operation.</returns>
-        Task MarkAsDestroyed(IUnit unit);
+        UniTask MarkAsDestroyed(IUnit unit);
     }
 }

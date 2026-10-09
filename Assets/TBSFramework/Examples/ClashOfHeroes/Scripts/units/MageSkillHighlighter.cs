@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using TurnBasedStrategyFramework.Unity.Highlighters;
 using TurnBasedStrategyFramework.Unity.Units;
 using UnityEngine;
@@ -14,7 +14,7 @@ namespace TurnBasedStrategyFramework.Unity.Examples.ClashOfHeroes.Units
         [SerializeField] private List<Highlighter> _healHighlighterFn;
         [SerializeField] private List<Highlighter> _teleportHighlighterFn;
 
-        public async Task ApplyHealEffect()
+        public async UniTask ApplyHealEffect()
         {
             foreach (var fn in _healHighlighterFn)
             {
@@ -22,7 +22,7 @@ namespace TurnBasedStrategyFramework.Unity.Examples.ClashOfHeroes.Units
             }
         }
 
-        public async Task ApplyRelocateEffect(MoveHighlightParams @params)
+        public async UniTask ApplyRelocateEffect(MoveHighlightParams @params)
         {
             foreach (var fn in _teleportHighlighterFn)
             {

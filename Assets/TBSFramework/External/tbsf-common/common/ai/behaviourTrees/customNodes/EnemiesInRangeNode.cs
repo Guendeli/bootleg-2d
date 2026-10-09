@@ -1,5 +1,5 @@
 using System.Linq;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using TurnBasedStrategyFramework.Common.Controllers;
 using TurnBasedStrategyFramework.Common.Units;
 
@@ -35,10 +35,10 @@ namespace TurnBasedStrategyFramework.Common.AI.BehaviourTrees
         /// Executes the enemies in range node by checking if there are any attackable enemy units in range of the specified unit.
         /// </summary>
         /// <returns>A task representing the execution, with a boolean result indicating whether any enemy units are in range.</returns>
-        public Task<bool> Execute(bool debugMode)
+        public UniTask<bool> Execute(bool debugMode)
         {
             var enemyUnits = _gridController.UnitManager.GetEnemyUnits(_unit.PlayerNumber);
-            return Task.FromResult(enemyUnits.Any(u => _unit.IsUnitAttackable(u, u.CurrentCell, _unit.CurrentCell)));
+            return UniTask.FromResult(enemyUnits.Any(u => _unit.IsUnitAttackable(u, u.CurrentCell, _unit.CurrentCell)));
         }
     }
 }

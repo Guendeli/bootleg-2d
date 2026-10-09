@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+﻿using Cysharp.Threading.Tasks;
 
 namespace TurnBasedStrategyFramework.Common.AI.BehaviourTrees
 {
@@ -8,11 +8,8 @@ namespace TurnBasedStrategyFramework.Common.AI.BehaviourTrees
     public readonly struct RealtimeDelayNode : ITreeNode
     {
         /// <summary>
-        /// A behavior tree node that introduces a real-time delay.
-        /// 
-        /// !! Not supported in WebGL builds:
-        /// WebGL does not support multithreading or the .NET task scheduler required for Task.Delay,
-        /// causing this node to hang or crash at runtime.
+        /// A behavior tree node that introduces a real-time delay, unaffected by Time.timeScale.
+        /// Runs on Unity's player loop via UniTask, so it also works in WebGL builds.
         /// </summary>
         private readonly int _delay;
 
@@ -21,9 +18,9 @@ namespace TurnBasedStrategyFramework.Common.AI.BehaviourTrees
             _delay = delay;
         }
 
-        public async Task<bool> Execute(bool debugMode)
+        public async UniTask<bool> Execute(bool debugMode)
         {
-            await Task.Delay(_delay);
+            await UniTask.Delay(_delay, DelayType.Realtime);
             return true;
         }
     }

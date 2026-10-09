@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using TurnBasedStrategyFramework.Unity.Units;
 using UnityEngine;
 
@@ -16,7 +16,7 @@ namespace TurnBasedStrategyFramework.Unity.Highlighters
 
         private bool _isDestroyed;
 
-        public override async Task Apply(IHighlightParams @params)
+        public override async UniTask Apply(IHighlightParams @params)
         {
             foreach (var highlighter in _highlighters)
             {

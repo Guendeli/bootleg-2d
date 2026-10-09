@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using TurnBasedStrategyFramework.Common.Controllers;
 
 namespace TurnBasedStrategyFramework.Common.Units.Abilities
@@ -9,15 +9,15 @@ namespace TurnBasedStrategyFramework.Common.Units.Abilities
     /// </summary>
     public class EndTurnCommand : ICommand
     {
-        public Task Execute(IUnit unit, IGridController controller)
+        public UniTask Execute(IUnit unit, IGridController controller)
         {
             controller.MakeTurnTransition();
-            return Task.CompletedTask;
+            return UniTask.CompletedTask;
         }
 
-        public Task Undo(IUnit unit, IGridController controller)
+        public UniTask Undo(IUnit unit, IGridController controller)
         {
-            return Task.CompletedTask;
+            return UniTask.CompletedTask;
         }
 
         public Dictionary<string, object> Serialize()

@@ -1,4 +1,4 @@
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using TurnBasedStrategyFramework.Unity.Units;
 using UnityEngine;
 
@@ -9,7 +9,7 @@ namespace TurnBasedStrategyFramework.Unity.Highlighters
     /// </summary>
     public class FaceEnemyHighlighter : BaseRotationHighlighter
     {
-        public override async Task Apply(IHighlightParams @params)
+        public override async UniTask Apply(IHighlightParams @params)
         {
             var combatHighlightParams = (CombatHighlightParams)@params;
             Vector3 directionToFace = (combatHighlightParams.SecondaryUnit.transform.position - _transform.position).normalized;

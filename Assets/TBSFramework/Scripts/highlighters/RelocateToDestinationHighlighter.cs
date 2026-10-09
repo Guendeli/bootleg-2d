@@ -1,4 +1,4 @@
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using TurnBasedStrategyFramework.Unity.Units;
 using TurnBasedStrategyFramework.Unity.Utilities;
 using UnityEngine;
@@ -12,11 +12,11 @@ namespace TurnBasedStrategyFramework.Unity.Highlighters
     {
         [SerializeField] private Transform _transform;
 
-        public override Task Apply(IHighlightParams @params)
+        public override UniTask Apply(IHighlightParams @params)
         {
             var moveHighlightParams = (MoveHighlightParams)@params;
             _transform.position = moveHighlightParams.Destination.WorldPosition.ToVector3();
-            return Task.CompletedTask;
+            return UniTask.CompletedTask;
         }
     }
 }

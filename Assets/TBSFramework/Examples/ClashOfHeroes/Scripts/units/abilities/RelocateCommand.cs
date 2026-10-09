@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using TurnBasedStrategyFramework.Common.Cells;
 using TurnBasedStrategyFramework.Common.Controllers;
 using TurnBasedStrategyFramework.Common.Units;
@@ -17,10 +17,10 @@ namespace TurnBasedStrategyFramework.Unity.MobileDemo
         private readonly ICell _destination;
         private readonly int _actionCost;
 
-        private readonly Func<Task> _relocateHighlighter;
+        private readonly Func<UniTask> _relocateHighlighter;
 
 
-        public RelocateCommand(ICell destination, int actionCost, Func<Task> relocateHighlighter)
+        public RelocateCommand(ICell destination, int actionCost, Func<UniTask> relocateHighlighter)
         {
             _destination = destination;
             _actionCost = actionCost;
@@ -28,7 +28,7 @@ namespace TurnBasedStrategyFramework.Unity.MobileDemo
             _relocateHighlighter = relocateHighlighter;
         }
 
-        public async Task Execute(IUnit unit, IGridController controller)
+        public async UniTask Execute(IUnit unit, IGridController controller)
         {
             var source = unit.CurrentCell;
             var sourceWorldPosition = unit.WorldPosition;
@@ -48,10 +48,10 @@ namespace TurnBasedStrategyFramework.Unity.MobileDemo
             unit.InvokeUnitEnteredCell(new UnitChangedGridPositionEventArgs(unit, source, _destination));
             unit.InvokeUnitPositionChanged(new UnitPositionChangedEventArgs(unit, sourceWorldPosition, unit.WorldPosition));
             unit.InvokeUnitMoved(new UnitMovedEventArgs(unit, source, _destination, new List<ICell>() { source, _destination }));
-            await Task.CompletedTask;
+            await UniTask.CompletedTask;
         }
 
-        public Task Undo(IUnit unit, IGridController controller)
+        public UniTask Undo(IUnit unit, IGridController controller)
         {
             throw new System.NotImplementedException();
         }

@@ -1,4 +1,4 @@
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using TurnBasedStrategyFramework.Common.Utilities;
 using TurnBasedStrategyFramework.Unity.Cells;
 using UnityEngine;
@@ -31,7 +31,7 @@ namespace TurnBasedStrategyFramework.Unity.Highlighters
         /// <param name="target">The target node (not used in this implementation).</param>
         /// <param name="params">The parameters used to define the path and its segments.</param>
         /// <returns>A completed task representing the synchronous application of the highlight.</returns>
-        public override Task Apply(IHighlightParams @params)
+        public override UniTask Apply(IHighlightParams @params)
         {
             var pathHighlightParams = (PathHighlightParams)@params;
 
@@ -48,7 +48,7 @@ namespace TurnBasedStrategyFramework.Unity.Highlighters
                 : GetArrowSegmentSprite(prevPosition, currentPosition, nextPosition);
 
             selectedSprite.gameObject.SetActive(true);
-            return Task.CompletedTask;
+            return UniTask.CompletedTask;
         }
 
         /// <summary>

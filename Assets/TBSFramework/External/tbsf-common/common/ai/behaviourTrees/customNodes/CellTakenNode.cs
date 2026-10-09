@@ -1,4 +1,4 @@
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using TurnBasedStrategyFramework.Common.Cells;
 
 namespace TurnBasedStrategyFramework.Common.AI.BehaviourTrees
@@ -26,9 +26,9 @@ namespace TurnBasedStrategyFramework.Common.AI.BehaviourTrees
         /// Executes the cell taken node by returning whether the specified cell is currently taken.
         /// </summary>
         /// <returns>A task representing the execution, with a boolean result indicating if the cell is taken.</returns>
-        public Task<bool> Execute(bool debugMode)
+        public UniTask<bool> Execute(bool debugMode)
         {
-            return Task.FromResult(_cell.IsTaken);
+            return UniTask.FromResult(_cell.IsTaken);
         }
     }
 }

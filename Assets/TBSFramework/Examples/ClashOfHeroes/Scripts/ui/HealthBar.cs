@@ -1,5 +1,5 @@
 using System;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using TurnBasedStrategyFramework.Unity.Units;
 using UnityEngine;
 using UnityEngine.UI;
@@ -34,7 +34,7 @@ namespace TurnBasedStrategyFramework.Unity.Examples.ClashOfHeroes.UI
             }
         }
 
-        private async Task AnimateHealthBarAsync(float targetScale)
+        private async UniTask AnimateHealthBarAsync(float targetScale)
         {
             _isAnimating = true;
             float elapsedTime = 0f;
@@ -49,7 +49,7 @@ namespace TurnBasedStrategyFramework.Unity.Examples.ClashOfHeroes.UI
                 _currentScale = Mathf.Lerp(initialScale, targetScale, smoothedT);
                 _healthBar.transform.localScale = new Vector3(_currentScale, 1, 1);
 
-                await Awaitable.NextFrameAsync();
+                await UniTask.NextFrame();
             }
 
             _currentScale = targetScale;

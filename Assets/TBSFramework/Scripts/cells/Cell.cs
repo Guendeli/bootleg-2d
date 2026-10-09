@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using TurnBasedStrategyFramework.Common.Cells;
 using TurnBasedStrategyFramework.Common.Units;
 using TurnBasedStrategyFramework.Common.Utilities;
@@ -80,7 +80,7 @@ namespace TurnBasedStrategyFramework.Unity.Cells
 
         public abstract int GetDistance(ICell otherCell);
 
-        public virtual async Task UnMark()
+        public virtual async UniTask UnMark()
         {
             foreach (var fn in _unMarkFn)
             {
@@ -88,7 +88,7 @@ namespace TurnBasedStrategyFramework.Unity.Cells
             }
         }
 
-        public virtual async Task MarkAsHighlighted()
+        public virtual async UniTask MarkAsHighlighted()
         {
             foreach (var fn in _markAsHighlightedFn)
             {
@@ -96,7 +96,7 @@ namespace TurnBasedStrategyFramework.Unity.Cells
             }
         }
 
-        public virtual async Task MarkAsReachable()
+        public virtual async UniTask MarkAsReachable()
         {
             foreach (var fn in _markAsReachableFn)
             {
@@ -104,7 +104,7 @@ namespace TurnBasedStrategyFramework.Unity.Cells
             }
         }
 
-        public virtual async Task MarkAsPath(IList<ICell> path, int cellIndex, ICell originCell)
+        public virtual async UniTask MarkAsPath(IList<ICell> path, int cellIndex, ICell originCell)
         {
             foreach (var fn in _markAsPathFn)
             {

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using TurnBasedStrategyFramework.Common.Cells;
 using TurnBasedStrategyFramework.Common.Controllers;
 using TurnBasedStrategyFramework.Common.Utilities;
@@ -135,7 +135,7 @@ namespace TurnBasedStrategyFramework.Unity.Examples.TilemapExample.Cells
             return _cells.Values;
         }
 
-        public override async Task MarkAsReachable(IEnumerable<ICell> cells)
+        public override async UniTask MarkAsReachable(IEnumerable<ICell> cells)
         {
             foreach (var cell in cells)
             {
@@ -143,24 +143,24 @@ namespace TurnBasedStrategyFramework.Unity.Examples.TilemapExample.Cells
             }
         }
 
-        public override Task MarkAsReachable(ICell cell)
+        public override UniTask MarkAsReachable(ICell cell)
         {
             _highlightLayer.SetTile(new Vector3Int(cell.GridCoordinates.x, cell.GridCoordinates.y, 0), _reachableTile);
-            return Task.CompletedTask;
+            return UniTask.CompletedTask;
         }
 
-        public override Task MarkAsHighlighted(ICell cell)
+        public override UniTask MarkAsHighlighted(ICell cell)
         {
             _highlightLayer.SetTile(new Vector3Int(cell.GridCoordinates.x, cell.GridCoordinates.y, 0), _highlightTile);
-            return Task.CompletedTask;
+            return UniTask.CompletedTask;
         }
 
-        public override Task UnMarkAsHighlighted(ICell cell)
+        public override UniTask UnMarkAsHighlighted(ICell cell)
         {
             return UnMark(cell);
         }
 
-        public override async Task UnMark(IEnumerable<ICell> cells)
+        public override async UniTask UnMark(IEnumerable<ICell> cells)
         {
             foreach (var cell in cells)
             {
@@ -168,13 +168,13 @@ namespace TurnBasedStrategyFramework.Unity.Examples.TilemapExample.Cells
             }
         }
 
-        public override Task UnMark(ICell cell)
+        public override UniTask UnMark(ICell cell)
         {
             _highlightLayer.SetTile(new Vector3Int(cell.GridCoordinates.x, cell.GridCoordinates.y, 0), null);
-            return Task.CompletedTask;
+            return UniTask.CompletedTask;
         }
 
-        public override Task MarkAsPath(IEnumerable<ICell> cells, ICell originCell)
+        public override UniTask MarkAsPath(IEnumerable<ICell> cells, ICell originCell)
         {
             int i = 0;
             var path = cells.ToList();
@@ -193,7 +193,7 @@ namespace TurnBasedStrategyFramework.Unity.Examples.TilemapExample.Cells
                 _highlightLayer.SetTile(new Vector3Int(cell.GridCoordinates.x, cell.GridCoordinates.y, 0), selectedTile);
                 i++;
             }
-            return Task.CompletedTask;
+            return UniTask.CompletedTask;
         }
 
         /// <summary>

@@ -1,4 +1,4 @@
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 
 namespace TurnBasedStrategyFramework.Unity.Examples.ClashOfHeroes.Units
 {
@@ -7,6 +7,6 @@ namespace TurnBasedStrategyFramework.Unity.Examples.ClashOfHeroes.Units
     /// </summary>
     public interface IHealHighlighter
     {
-        Task ApplyHealEffect();
+        UniTask ApplyHealEffect();
     }
 }

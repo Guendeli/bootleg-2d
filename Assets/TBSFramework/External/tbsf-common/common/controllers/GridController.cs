@@ -1,4 +1,5 @@
 using System;
+using Cysharp.Threading.Tasks;
 using TurnBasedStrategyFramework.Common.Cells;
 using TurnBasedStrategyFramework.Common.Controllers.GameResolvers;
 using TurnBasedStrategyFramework.Common.Controllers.GridStates;
@@ -144,9 +145,9 @@ namespace TurnBasedStrategyFramework.Common.Controllers
         {
             if (unit.PlayerNumber.Equals(TurnContext.CurrentPlayer.PlayerNumber))
             {
-                _ = eventArgs.PreAction(this);
+                eventArgs.PreAction(this).Forget();
                 await eventArgs.Command.Execute(unit, this);
-                _ = eventArgs.PostAction(this);
+                eventArgs.PostAction(this).Forget();
             }
         }
 

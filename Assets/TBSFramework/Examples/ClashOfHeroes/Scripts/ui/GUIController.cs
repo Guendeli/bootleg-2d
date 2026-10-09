@@ -7,6 +7,8 @@ using TurnBasedStrategyFramework.Unity.Controllers;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Cysharp.Threading.Tasks;
+using System;
 
 namespace TurnBasedStrategyFramework.Unity.Examples.ClashOfHeroes.UI
 {
@@ -36,7 +38,7 @@ namespace TurnBasedStrategyFramework.Unity.Examples.ClashOfHeroes.UI
 
         private async void OnGameEnded(GameResult gameResult)
         {
-            await Awaitable.WaitForSecondsAsync(1f);
+            await UniTask.Delay(TimeSpan.FromSeconds(1f));
 
             _endTurnButton.interactable = false;
             _gameOverPanel.SetActive(true);

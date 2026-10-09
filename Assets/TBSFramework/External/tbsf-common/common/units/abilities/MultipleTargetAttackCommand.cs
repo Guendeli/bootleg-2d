@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using TurnBasedStrategyFramework.Common.Controllers;
 
 namespace TurnBasedStrategyFramework.Common.Units.Abilities
@@ -28,14 +28,14 @@ namespace TurnBasedStrategyFramework.Common.Units.Abilities
         /// <summary>
         /// A function that highlights the aggressor unit when performing the attack.
         /// </summary>
-        private readonly Func<Task> _aggressorHighlighter;
+        private readonly Func<UniTask> _aggressorHighlighter;
 
         /// <summary>
         /// A function that highlights a defender unit when it is attacked.
         /// </summary>
-        private readonly Func<IUnit, Task> _defenderHighlighter;
+        private readonly Func<IUnit, UniTask> _defenderHighlighter;
 
-        public MultipleTargetAttackCommand(IEnumerable<IUnit> targets, float damage, int actionCost, Func<Task> aggressorHighlighter, Func<IUnit, Task> defenderHighlighter)
+        public MultipleTargetAttackCommand(IEnumerable<IUnit> targets, float damage, int actionCost, Func<UniTask> aggressorHighlighter, Func<IUnit, UniTask> defenderHighlighter)
         {
             _targets = targets;
             _damage = damage;
@@ -45,9 +45,9 @@ namespace TurnBasedStrategyFramework.Common.Units.Abilities
             _defenderHighlighter = defenderHighlighter;
         }
 
-        public async Task Execute(IUnit unit, IGridController controller)
+        public async UniTask Execute(IUnit unit, IGridController controller)
         {
-            _ = _aggressorHighlighter.Invoke();
+            _aggressorHighlighter.Invoke().Forget();
 
             foreach (var target in _targets)
             {
@@ -57,10 +57,10 @@ namespace TurnBasedStrategyFramework.Common.Units.Abilities
             }
 
             unit.ActionPoints -= _actionCost;
-            await Task.CompletedTask;
+            await UniTask.CompletedTask;
         }
 
-        public Task Undo(IUnit unit, IGridController controller)
+        public UniTask Undo(IUnit unit, IGridController controller)
         {
             throw new System.NotImplementedException();
         }

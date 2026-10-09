@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using TurnBasedStrategyFramework.Common.AI.BehaviourTrees;
 using TurnBasedStrategyFramework.Common.Controllers;
 using TurnBasedStrategyFramework.Common.Units;
@@ -61,7 +61,7 @@ namespace TurnBasedStrategyFramework.Unity.Examples.Legacy.Example4.AI.Behaviour
                                 new InverterNode(
                                     new UnitCounterNode(_knightUnitType, _knightThreshold, gridController.UnitManager, player)
                                 ),
-                                new FuncNode(() => Task.FromResult(
+                                new FuncNode(() => UniTask.FromResult(
                                     gridController.UnitManager.GetEnemyUnits(player)
                                         .Count(u => ((ITypedUnit)u).UnitType == _knightUnitType) >=
                                     gridController.UnitManager.GetFriendlyUnits(player)
@@ -80,7 +80,7 @@ namespace TurnBasedStrategyFramework.Unity.Examples.Legacy.Example4.AI.Behaviour
                                 new InverterNode(
                                     new UnitCounterNode(_wizardUnitType, _wizardThreshold, gridController.UnitManager, player)
                                 ),
-                                new FuncNode(() => Task.FromResult(
+                                new FuncNode(() => UniTask.FromResult(
                                     gridController.UnitManager.GetEnemyUnits(player)
                                         .Count(u => ((ITypedUnit)u).UnitType == _wizardUnitType) >=
                                     gridController.UnitManager.GetFriendlyUnits(player)
@@ -99,7 +99,7 @@ namespace TurnBasedStrategyFramework.Unity.Examples.Legacy.Example4.AI.Behaviour
                                 new InverterNode(
                                     new UnitCounterNode(_scoutUnitType, _scoutThreshold, gridController.UnitManager, player)
                                 ),
-                                new FuncNode(() => Task.FromResult(
+                                new FuncNode(() => UniTask.FromResult(
                                     gridController.UnitManager.GetEnemyUnits(player)
                                         .Count(u => ((ITypedUnit)u).UnitType == _scoutUnitType) >=
                                     gridController.UnitManager.GetFriendlyUnits(player)

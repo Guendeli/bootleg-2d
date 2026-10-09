@@ -1,4 +1,4 @@
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace TurnBasedStrategyFramework.Unity.Highlighters
@@ -13,7 +13,7 @@ namespace TurnBasedStrategyFramework.Unity.Highlighters
         [SerializeField] private float _duration;
         [SerializeField] private Transform _transform;
 
-        public override async Task Apply(IHighlightParams @params)
+        public override async UniTask Apply(IHighlightParams @params)
         {
             Vector3 startPosition = _transform.position;
             Vector3 targetPosition = startPosition + _positionDelta;
@@ -25,7 +25,7 @@ namespace TurnBasedStrategyFramework.Unity.Highlighters
                 elapsedTime += Time.deltaTime;
                 float t = Mathf.Clamp01(elapsedTime / _duration);
                 _transform.position = Vector3.Lerp(startPosition, targetPosition, t);
-                await Awaitable.NextFrameAsync();
+                await UniTask.NextFrame();
             }
 
             _transform.position = targetPosition;

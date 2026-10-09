@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using TurnBasedStrategyFramework.Common.Controllers;
 using TurnBasedStrategyFramework.Common.Units;
 using TurnBasedStrategyFramework.Common.Units.Abilities;
@@ -34,14 +34,14 @@ namespace TurnBasedStrategyFramework.Unity.Examples.Legacy.Example4.Units.Abilit
             _gridPositionY = gridPositionY;
         }
 
-        public Task Execute(IUnit unit, IGridController controller)
+        public UniTask Execute(IUnit unit, IGridController controller)
         {
             _capturable.Capture(unit, _amount, unit.PlayerNumber, _playerColor);
             unit.ActionPoints -= 1;
-            return Task.CompletedTask;
+            return UniTask.CompletedTask;
         }
 
-        public Task Undo(IUnit unit, IGridController controller)
+        public UniTask Undo(IUnit unit, IGridController controller)
         {
             throw new NotImplementedException();
         }
