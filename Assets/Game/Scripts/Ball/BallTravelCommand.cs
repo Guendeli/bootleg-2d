@@ -11,22 +11,25 @@ using TurnBasedStrategyFramework.Common.Utilities;
 namespace Bootleg.Ball
 {
     /// <summary>
-    /// Pushes the ball along a precomputed path. Executed by the pushing unit, which pays the action cost;
-    /// the ball is the unit that moves.
+    /// Sends the ball along a precomputed path: a push (loose ball) or a kick (ball carried by the executing unit,
+    /// which loses possession). Executed by the pushing/kicking unit, which pays the action cost; the ball is the unit that moves.
     /// </summary>
-    public readonly struct PushBallCommand : ICommand
+    public readonly struct BallTravelCommand : ICommand
     {
         private readonly IUnit _ball;
         private readonly ICell _source;
         private readonly IReadOnlyList<ICell> _path;
         private readonly int _actionCost;
+        private readonly bool _isKick;
 
-        public PushBallCommand(IUnit ball, ICell source, IReadOnlyList<ICell> path, int actionCost)
+        /// <param name="isKick">True if the executing unit carries the ball and kicks it away.</param>
+        public BallTravelCommand(IUnit ball, ICell source, IReadOnlyList<ICell> path, int actionCost, bool isKick = false)
         {
             _ball = ball;
             _source = source;
             _path = path;
             _actionCost = actionCost;
+            _isKick = isKick;
         }
 
         private ICell Destination => _path[_path.Count - 1];
@@ -34,6 +37,10 @@ namespace Bootleg.Ball
         public async UniTask Execute(IUnit unit, IGridController controller)
         {
             unit.ActionPoints -= _actionCost;
+            if (_isKick && _ball is BallUnit ballUnit)
+            {
+                ballUnit.Release();
+            }
 
             var destination = Destination;
             _source.CurrentUnits.Remove(_ball);
@@ -60,6 +67,10 @@ namespace Bootleg.Ball
             _ball.WorldPosition = _source.WorldPosition;
             _source.IsTaken = true;
             _source.CurrentUnits.Add(_ball);
+            if (_isKick && _ball is BallUnit ballUnit)
+            {
+                ballUnit.TakePossession(unit);
+            }
 
             unit.ActionPoints += _actionCost;
             return UniTask.CompletedTask;
@@ -71,6 +82,7 @@ namespace Bootleg.Ball
             public const string Source = "source";
             public const string Path = "path";
             public const string ActionCost = "actionCost";
+            public const string IsKick = "isKick";
 
             public const string X = "x";
             public const string Y = "y";
@@ -90,7 +102,8 @@ namespace Bootleg.Ball
                 { SerializationKeys.Ball, _ball.UnitID },
                 { SerializationKeys.Source, SerializeCoordinates(_source) },
                 { SerializationKeys.Path, _path.Select(SerializeCoordinates).ToArray() },
-                { SerializationKeys.ActionCost, _actionCost }
+                { SerializationKeys.ActionCost, _actionCost },
+                { SerializationKeys.IsKick, _isKick }
             };
         }
 
@@ -112,7 +125,9 @@ namespace Bootleg.Ball
                 .ToList();
             var actionCost = Convert.ToInt32(actionParams[SerializationKeys.ActionCost]);
 
-            return new PushBallCommand(ball, source, path, actionCost);
+            var isKick = actionParams.TryGetValue(SerializationKeys.IsKick, out var kick) && Convert.ToBoolean(kick);
+
+            return new BallTravelCommand(ball, source, path, actionCost, isKick);
         }
     }
 }

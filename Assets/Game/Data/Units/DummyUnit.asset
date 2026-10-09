@@ -14,8 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Bootleg.Game::Bootleg.Units.UnitDefinition
   _displayName: 
   _maxHealth: 10
-  _maxActionPoints: 1
+  _maxActionPoints: 5
   _maxMovementPoints: 6
   _attackRange: 1
   _attack: 1
   _defence: 1
+  _kickPower: 2

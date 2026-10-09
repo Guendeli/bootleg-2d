@@ -2281,17 +2281,14 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 889404546449052493, guid: 18b31fcb385dcbb418ab11da7ad56422, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1818499975}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 18b31fcb385dcbb418ab11da7ad56422, type: 3}
 --- !u!114 &391914573 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 232018564455111798, guid: 18b31fcb385dcbb418ab11da7ad56422, type: 3}
   m_PrefabInstance: {fileID: 391914572}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1818499971}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1e3818b6f025f4f988fca43c900b038b, type: 3}
@@ -7572,6 +7569,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1714072220}
   - component: {fileID: 1714072219}
+  - component: {fileID: 1714072221}
   m_Layer: 0
   m_Name: GUIController
   m_TagString: Untagged
@@ -7607,6 +7605,24 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1714072221
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1714072218}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38c64320bf6d14b44a86661e30c9540f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Bootleg.Game::Bootleg.UI.ActionMenu
+  _gridController: {fileID: 1573654405}
+  _buttonSize: {x: 140, y: 48}
+  _panelColor: {r: 0, g: 0, b: 0, a: 0.6}
+  _buttonColor: {r: 0.22, g: 0.24, b: 0.28, a: 1}
+  _activeButtonColor: {r: 0.2, g: 0.45, b: 0.8, a: 1}
+  _textColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1001 &1735199856
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7834,25 +7850,6 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 875298101}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 075d8978086594666851081207201f85, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Bootleg.Game::Bootleg.Ball.PushBallAbility
-  _actionCost: 1
-  _fallbackKickPower: 2
---- !u!1 &1818499971 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 889404546449052493, guid: 18b31fcb385dcbb418ab11da7ad56422, type: 3}
-  m_PrefabInstance: {fileID: 391914572}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1818499975
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1818499971}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 075d8978086594666851081207201f85, type: 3}

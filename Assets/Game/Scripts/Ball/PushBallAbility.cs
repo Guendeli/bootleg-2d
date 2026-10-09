@@ -24,9 +24,7 @@ namespace Bootleg.Ball
         private Dictionary<BallUnit, List<ICell>> _pushPaths = new Dictionary<BallUnit, List<ICell>>();
         private List<ICell> _previewedPath = new List<ICell>();
 
-        private int KickPower => UnitReference is TacticsUnit tacticsUnit && tacticsUnit.Stats != null
-            ? tacticsUnit.Stats.GetInt(StatType.KickPower)
-            : _fallbackKickPower;
+        private int KickPower => BallStats.KickPower(UnitReference, _fallbackKickPower);
 
         public override void OnAbilitySelected(IGridController gridController)
         {
@@ -73,7 +71,7 @@ namespace Bootleg.Ball
         {
             if (unit is BallUnit ball && _pushPaths.TryGetValue(ball, out var path))
             {
-                UnitReference.HumanExecuteAbility(new PushBallCommand(ball, ball.CurrentCell, path, _actionCost), gridController);
+                UnitReference.HumanExecuteAbility(new BallTravelCommand(ball, ball.CurrentCell, path, _actionCost), gridController);
             }
         }
 
@@ -89,7 +87,7 @@ namespace Bootleg.Ball
             // Only loose balls for now: taking the ball off a carrier (tackling) is a later iteration.
             foreach (var ball in gridController.UnitManager.GetUnits().OfType<BallUnit>().Where(b => b.IsLoose))
             {
-                var path = BallPushRules.GetPushPath(UnitReference.CurrentCell, ball.CurrentCell, kickPower, gridController.CellManager.GetCellAt);
+                var path = BallPathRules.GetPushPath(UnitReference.CurrentCell, ball.CurrentCell, kickPower, gridController.CellManager.GetCellAt);
                 if (path.Count > 0)
                 {
                     paths[ball] = path;

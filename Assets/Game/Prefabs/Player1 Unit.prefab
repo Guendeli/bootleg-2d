@@ -94,6 +94,8 @@ GameObject:
   - component: {fileID: -987196005635959891}
   - component: {fileID: 5512708083755077712}
   - component: {fileID: -5892823110541515203}
+  - component: {fileID: -1712817313211499075}
+  - component: {fileID: -3458245089338430578}
   m_Layer: 0
   m_Name: Player1 Unit
   m_TagString: Untagged
@@ -171,6 +173,12 @@ MonoBehaviour:
   - Label: Push
     Abilities:
     - {fileID: -5892823110541515203}
+  - Label: Kick
+    Abilities:
+    - {fileID: -1712817313211499075}
+  - Label: Tackle
+    Abilities:
+    - {fileID: -3458245089338430578}
 --- !u!114 &6690911799131170672
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -221,6 +229,34 @@ MonoBehaviour:
   m_EditorClassIdentifier: Bootleg.Game::Bootleg.Ball.PushBallAbility
   _actionCost: 1
   _fallbackKickPower: 2
+--- !u!114 &-1712817313211499075
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 889404546449052493}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30808780cd93b4c179d53c081b4bef7b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Bootleg.Game::Bootleg.Ball.KickAbility
+  _actionCost: 1
+  _fallbackKickPower: 2
+--- !u!114 &-3458245089338430578
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 889404546449052493}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b68b24969e5e844c6bc5244a92378f71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Bootleg.Game::Bootleg.Ball.TackleAbility
+  _actionCost: 1
+  _successChance: 1
 --- !u!1 &1475985202764374347
 GameObject:
   m_ObjectHideFlags: 0

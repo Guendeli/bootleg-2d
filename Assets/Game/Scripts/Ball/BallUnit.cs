@@ -39,6 +39,18 @@ namespace Bootleg.Ball
             gridController.UnitManager.UnitRemoved += OnUnitRemoved;
         }
 
+        /// <summary>Gives the ball to a unit already on the ball's cell (e.g. a successful tackle).</summary>
+        public void TakePossession(IUnit unit)
+        {
+            SetCarrier(unit);
+        }
+
+        /// <summary>Makes the ball loose on its current cell (e.g. before a kick).</summary>
+        public void Release()
+        {
+            SetCarrier(null);
+        }
+
         public override void ModifyHealth(float healthChangeAmount, IUnit sourceUnit)
         {
         }
